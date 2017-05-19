@@ -13,6 +13,7 @@ public class PaquetePersonaje extends Paquete implements Serializable, Cloneable
 	private String nombre;
 	private String raza;
 	private int saludTope;
+	private int salud;
 	private int energiaTope;
 	private int fuerza;
 	private int destreza;
@@ -102,6 +103,15 @@ public class PaquetePersonaje extends Paquete implements Serializable, Cloneable
 
 	public void setSaludTope(int saludTope) {
 		this.saludTope = saludTope;
+	}
+	
+	public int getSalud() {
+		return salud;
+	}
+
+
+	public void setSalud(int salud) {
+		this.salud = salud;
 	}
 
 
