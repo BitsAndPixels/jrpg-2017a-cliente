@@ -78,18 +78,13 @@ public class EscuchaMensajes extends Thread {
 					paqueteAtacar = (PaqueteAtacar) gson.fromJson(objetoLeido, PaqueteAtacar.class);
 					
 					HashMap<String,Integer> atributos = new HashMap<String,Integer>();
-					atributos.put("saludPersonaje", paqueteAtacar.getNuevaSaludPersonaje());
-					atributos.put("energiaPersonaje", paqueteAtacar.getNuevaEnergiaPersonaje());
-					atributos.put("saludEnemigo", paqueteAtacar.getNuevaSaludEnemigo());
-					atributos.put("energiaEnemigo", paqueteAtacar.getNuevaEnergiaEnemigo());
+					atributos.put("salud"+paqueteAtacar.getId(), paqueteAtacar.getNuevaSaludPersonaje());
+					atributos.put("energia"+paqueteAtacar.getId(), paqueteAtacar.getNuevaEnergiaPersonaje());
+					atributos.put("salud"+paqueteAtacar.getIdEnemigo(), paqueteAtacar.getNuevaSaludEnemigo());
+					atributos.put("energia"+paqueteAtacar.getIdEnemigo(), paqueteAtacar.getNuevaEnergiaEnemigo());
 					
 					juego.getEstadoBatalla().getEnemigo().modificarAtributos(atributos);
 					juego.getEstadoBatalla().getPersonaje().modificarAtributos(atributos);
-					
-//					juego.getEstadoBatalla().getEnemigo().setSalud(paqueteAtacar.getNuevaSaludPersonaje());
-//					juego.getEstadoBatalla().getEnemigo().setEnergia(paqueteAtacar.getNuevaEnergiaPersonaje());
-//					juego.getEstadoBatalla().getPersonaje().setSalud(paqueteAtacar.getNuevaSaludEnemigo());
-//					juego.getEstadoBatalla().getPersonaje().setEnergia(paqueteAtacar.getNuevaEnergiaEnemigo());
 					juego.getEstadoBatalla().setMiTurno(true);
 					break;
 					
