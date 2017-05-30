@@ -1,6 +1,7 @@
 package mensajeria;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class PaqueteAtacar extends Paquete implements Serializable, Cloneable {
 
@@ -10,6 +11,7 @@ public class PaqueteAtacar extends Paquete implements Serializable, Cloneable {
 	private int nuevaEnergiaPersonaje;
 	private int nuevaSaludEnemigo;
 	private int nuevaEnergiaEnemigo;
+	private HashMap<String,Integer> atributos;
 	
 	public PaqueteAtacar(int id, int idEnemigo, int nuevaSalud, int nuevaEnergia, int nuevaSaludEnemigo, int nuevaEnergiaEnemigo) {
 		setComando(Comando.ATACAR);
@@ -19,6 +21,8 @@ public class PaqueteAtacar extends Paquete implements Serializable, Cloneable {
 		this.nuevaEnergiaPersonaje = nuevaEnergia;
 		this.nuevaSaludEnemigo = nuevaSaludEnemigo;
 		this.nuevaEnergiaEnemigo = nuevaEnergiaEnemigo;
+		this.atributos = new HashMap<String,Integer>();
+		
 	}
 
 	public int getId() {
@@ -68,7 +72,17 @@ public class PaqueteAtacar extends Paquete implements Serializable, Cloneable {
 	public void setNuevaEnergiaEnemigo(int nuevaEnergiaEnemigo) {
 		this.nuevaEnergiaEnemigo = nuevaEnergiaEnemigo;
 	}
+	
+	public HashMap<String, Integer> getAtributos() {
+		return atributos;
+	}
 
+	public void encapsularAtributos(){
+		this.atributos.put("salud"+this.getId(), this.getNuevaSaludPersonaje());
+		this.atributos.put("energia"+this.getId(), this.getNuevaEnergiaPersonaje());
+		this.atributos.put("salud"+this.getIdEnemigo(), this.getNuevaSaludEnemigo());
+		this.atributos.put("energia"+this.getIdEnemigo(), this.getNuevaEnergiaEnemigo());
+	}
 
 
 }
