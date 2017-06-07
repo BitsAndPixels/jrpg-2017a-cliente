@@ -20,6 +20,8 @@ import dominio.Personaje;
 import interfaz.EstadoDePersonaje;
 import interfaz.MenuBatalla;
 import interfaz.MenuInfoPersonaje;
+import inventario.Inventario;
+import inventario.Mochila;
 import juego.Juego;
 import mensajeria.Comando;
 import mensajeria.PaqueteAtacar;
@@ -196,6 +198,8 @@ public class EstadoBatalla extends Estado {
 		int experiencia = paquetePersonaje.getExperiencia();
 		int nivel = paquetePersonaje.getNivel();
 		int id = paquetePersonaje.getId();
+//		Mochila mochila = paqueteMochila.getMochila();
+//		Inventario inventario = paqueteInventario.getInventario();
 
 		Casta casta = null;
 		if (paquetePersonaje.getCasta().equals("Guerrero")) {
@@ -208,13 +212,13 @@ public class EstadoBatalla extends Estado {
 
 		if (paquetePersonaje.getRaza().equals("Humano")) {
 			personaje = new Humano(nombre, salud, energia, fuerza, destreza, inteligencia, casta, 
-				experiencia, nivel, id);
+				experiencia, nivel, id, new Inventario(), new Mochila());
 		} else if (paquetePersonaje.getRaza().equals("Orco")) {
 			personaje = new Orco(nombre, salud, energia, fuerza, destreza, inteligencia, casta, 
-					experiencia, nivel, id);
+					experiencia, nivel, id, new Inventario(), new Mochila());
 		} else if (paquetePersonaje.getRaza().equals("Elfo")) {
 			personaje = new Elfo(nombre, salud, energia, fuerza, destreza, inteligencia, casta,
-					experiencia, nivel, id);
+					experiencia, nivel, id, new Inventario(), new Mochila());
 		}
 
 		nombre = paqueteEnemigo.getNombre();
@@ -238,13 +242,13 @@ public class EstadoBatalla extends Estado {
 
 		if (paqueteEnemigo.getRaza().equals("Humano")) {
 			enemigo = new Humano(nombre, salud, energia, fuerza, destreza, inteligencia, casta,
-					experiencia, nivel, id);
+					experiencia, nivel, id, new Inventario(), new Mochila());
 		} else if (paqueteEnemigo.getRaza().equals("Orco")) {
 			enemigo = new Orco(nombre, salud, energia, fuerza, destreza, inteligencia, casta,
-					experiencia, nivel, id);
+					experiencia, nivel, id, new Inventario(), new Mochila());
 		} else if (paqueteEnemigo.getRaza().equals("Elfo")) {
 			enemigo = new Elfo(nombre, salud, energia, fuerza, destreza, inteligencia, casta,
-					experiencia, nivel, id);
+					experiencia, nivel, id, new Inventario(), new Mochila());
 		}
 	}
 
