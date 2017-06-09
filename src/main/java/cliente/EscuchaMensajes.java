@@ -18,6 +18,7 @@ import mensajeria.PaqueteBatalla;
 import mensajeria.PaqueteDeMovimientos;
 import mensajeria.PaqueteDePersonajes;
 import mensajeria.PaqueteFinalizarBatalla;
+import mensajeria.PaqueteItem;
 import mensajeria.PaqueteMovimiento;
 import mensajeria.PaquetePersonaje;
 
@@ -49,6 +50,8 @@ public class EscuchaMensajes extends Thread {
 			PaqueteFinalizarBatalla paqueteFinalizarBatalla;
 			personajesConectados = new HashMap<>();
 			ubicacionPersonajes = new HashMap<>();
+			
+			PaqueteItem paqueteItem;
 
 			while (true) {
 				
@@ -99,6 +102,9 @@ public class EscuchaMensajes extends Thread {
 						juego.actualizarPersonaje();
 						juego.getEstadoJuego().actualizarPersonaje();
 					}
+//				case Comando.OBTENERITEM:
+//					paqueteItem = (PaqueteItem) gson.fromJson(objetoLeido, PaqueteItem.class);
+					
 //				case Comando.INVENTARIO:
 //					paquetePersonaje = (PaquetePersonaje) gson.fromJson(objetoLeido, PaquetePersonaje.class);
 //					juego.getPersonaje().setEstado(Estado.estadoInventario);

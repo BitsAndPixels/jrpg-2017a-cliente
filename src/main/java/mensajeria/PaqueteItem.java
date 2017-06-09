@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class PaqueteItem extends Paquete implements Serializable, Cloneable{
 	
-	//private int idPj;
 	private int idItem;
 	private int bonoAtaque;
 	private int bonoDefensa;
@@ -15,13 +14,10 @@ public class PaqueteItem extends Paquete implements Serializable, Cloneable{
 	private String nombre;
 	
 	public PaqueteItem() {
-		setComando(Comando.ITEM);
 	}
 	
 	public PaqueteItem(int idItem, int bonoAtaque, int bonoDefensa, int bonoMagia, int bonoSalud,
 			int bonoEnergia, int tipo, String nombre) {
-		setComando(Comando.ITEM);
-		//this.idPj = idPj;
 		this.idItem = idItem;
 		this.bonoAtaque = bonoAtaque;
 		this.bonoDefensa = bonoDefensa;
@@ -31,12 +27,7 @@ public class PaqueteItem extends Paquete implements Serializable, Cloneable{
 		this.tipo = tipo;
 		this.nombre = nombre;
 	}
-//	public int getIdPj() {
-//		return idPj;
-//	}
-//	public void setIdPj(int idPj) {
-//		this.idPj = idPj;
-//	}
+
 	public int getIdItem() {
 		return idItem;
 	}

@@ -27,6 +27,7 @@ import mensajeria.Comando;
 import mensajeria.PaqueteAtacar;
 import mensajeria.PaqueteBatalla;
 import mensajeria.PaqueteFinalizarBatalla;
+import mensajeria.PaqueteItem;
 import mensajeria.PaquetePersonaje;
 import mundo.Mundo;
 import recursos.Recursos;
@@ -52,6 +53,11 @@ public class EstadoBatalla extends Estado {
 	private BufferedImage miniaturaEnemigo;
 	
 	private MenuBatalla menuBatalla;
+	
+//	private PaqueteMochila paqueteMochila;
+//	private PaqueteInventario paqueteInventario;
+	private PaqueteItem paqueteItem;
+	
 	
 	public EstadoBatalla(Juego juego, PaqueteBatalla paqueteBatalla) {
 		super(juego);
@@ -198,8 +204,8 @@ public class EstadoBatalla extends Estado {
 		int experiencia = paquetePersonaje.getExperiencia();
 		int nivel = paquetePersonaje.getNivel();
 		int id = paquetePersonaje.getId();
-//		Mochila mochila = paqueteMochila.getMochila();
-//		Inventario inventario = paqueteInventario.getInventario();
+		Mochila mochila = new Mochila();
+		Inventario inventario = new Inventario();
 
 		Casta casta = null;
 		if (paquetePersonaje.getCasta().equals("Guerrero")) {
@@ -209,16 +215,17 @@ public class EstadoBatalla extends Estado {
 		} else if (paquetePersonaje.getCasta().equals("Asesino")) {
 			casta = new Asesino();
 		}
+		
 
 		if (paquetePersonaje.getRaza().equals("Humano")) {
 			personaje = new Humano(nombre, salud, energia, fuerza, destreza, inteligencia, casta, 
-				experiencia, nivel, id, new Inventario(), new Mochila());
+				experiencia, nivel, id, inventario, mochila);
 		} else if (paquetePersonaje.getRaza().equals("Orco")) {
 			personaje = new Orco(nombre, salud, energia, fuerza, destreza, inteligencia, casta, 
-					experiencia, nivel, id, new Inventario(), new Mochila());
+					experiencia, nivel, id, inventario, mochila);
 		} else if (paquetePersonaje.getRaza().equals("Elfo")) {
 			personaje = new Elfo(nombre, salud, energia, fuerza, destreza, inteligencia, casta,
-					experiencia, nivel, id, new Inventario(), new Mochila());
+					experiencia, nivel, id, inventario, mochila);
 		}
 
 		nombre = paqueteEnemigo.getNombre();
