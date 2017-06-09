@@ -21,30 +21,30 @@ public class TestCliente {
 
 	/// Para realizar los test es necesario iniciar el servidor
 
-//	@Test
-//	public void testConexionConElServidor() {
-//		Gson gson = new Gson();
-//
-//		Cliente cliente = new Cliente();
-//
-//		// Pasado este punto la conexi�n entre el cliente y el servidor resulto exitosa
-//		Assert.assertEquals(1, 1);
-//
-//		try {
-//
-//			// Cierro las conexiones
-//			Paquete p = new Paquete();
-//			p.setComando(Comando.DESCONECTAR);
-//			p.setIp(cliente.getMiIp());
-//			cliente.getSalida().writeObject(gson.toJson(p));
-//			cliente.getSalida().close();
-//			cliente.getEntrada().close();
-//			cliente.getSocket().close();
-//
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	@Test
+	public void testConexionConElServidor() {
+		Gson gson = new Gson();
+
+		Cliente cliente = new Cliente();
+
+		// Pasado este punto la conexi�n entre el cliente y el servidor resulto exitosa
+		Assert.assertEquals(1, 1);
+
+		try {
+
+			// Cierro las conexiones
+			Paquete p = new Paquete();
+			p.setComando(Comando.DESCONECTAR);
+			p.setIp(cliente.getMiIp());
+			cliente.getSalida().writeObject(gson.toJson(p));
+			cliente.getSalida().close();
+			cliente.getEntrada().close();
+			cliente.getSocket().close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 //
 //	@Test
 //	public void testRegistro() {
@@ -276,6 +276,39 @@ public class TestCliente {
 			
 			Assert.assertEquals("Botas", paqueteItem.getNombre());
 			Assert.assertEquals(1, paqueteItem.getBonoDefensa());
+			
+		} catch (IOException | JsonSyntaxException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Test
+	public void testObtenerCantidadDeItems() {
+		Gson gson = new Gson();
+		Cliente cliente = new Cliente();
+		PaqueteItem pi = new PaqueteItem();
+		
+		pi.setComando(Comando.CANTIDADITEMS);
+		
+		try {
+			// Envio el paquete pidiendo un item
+			cliente.getSalida().writeObject(gson.toJson(pi));
+			
+			// Recibo el item:
+			PaqueteItem paqueteItem = (PaqueteItem) gson
+					.fromJson((String) cliente.getEntrada().readObject(), PaqueteItem.class);
+			
+			// Cierro Conexion:
+			Paquete p = new Paquete();
+			p.setComando(Comando.DESCONECTAR);
+			p.setIp(cliente.getMiIp());
+			cliente.getSalida().writeObject(gson.toJson(p));
+			cliente.getSalida().close();
+			cliente.getEntrada().close();
+			cliente.getSocket().close();
+			
+			Assert.assertEquals(7, paqueteItem.getCantidad());
 			
 		} catch (IOException | JsonSyntaxException | ClassNotFoundException e) {
 			e.printStackTrace();

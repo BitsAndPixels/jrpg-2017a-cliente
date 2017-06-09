@@ -12,6 +12,7 @@ public class PaqueteItem extends Paquete implements Serializable, Cloneable{
 	private int bonoEnergia;
 	private int tipo;
 	private String nombre;
+	private int cantidad;
 	
 	public PaqueteItem() {
 	}
@@ -75,6 +76,12 @@ public class PaqueteItem extends Paquete implements Serializable, Cloneable{
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	public int getCantidad() {
+		return cantidad;
+	}
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
 	}
 	
 	

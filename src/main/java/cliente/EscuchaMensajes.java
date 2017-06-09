@@ -102,8 +102,15 @@ public class EscuchaMensajes extends Thread {
 						juego.actualizarPersonaje();
 						juego.getEstadoJuego().actualizarPersonaje();
 					}
-//				case Comando.OBTENERITEM:
-//					paqueteItem = (PaqueteItem) gson.fromJson(objetoLeido, PaqueteItem.class);
+				case Comando.OBTENERITEM:
+					paqueteItem = (PaqueteItem) gson.fromJson(objetoLeido, PaqueteItem.class);
+					juego.getEstadoBatalla().setPaqueteItem(paqueteItem);
+					break;
+					
+				case Comando.CANTIDADITEMS:
+					paqueteItem = (PaqueteItem) gson.fromJson(objetoLeido, PaqueteItem.class);
+					juego.getEstadoBatalla().getPaqueteItem().setCantidad(paqueteItem.getCantidad());
+					break;
 					
 //				case Comando.INVENTARIO:
 //					paquetePersonaje = (PaquetePersonaje) gson.fromJson(objetoLeido, PaquetePersonaje.class);

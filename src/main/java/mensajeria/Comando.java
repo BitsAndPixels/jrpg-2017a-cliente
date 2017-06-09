@@ -16,4 +16,5 @@ public class Comando {
 	public static final int SALIR = 7;
 	public static final int INVENTARIO = 12;
 	public static final int OBTENERITEM = 13;
+	public static final int CANTIDADITEMS = 14;
 }

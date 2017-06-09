@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
+import org.junit.Assert;
+
 import com.google.gson.Gson;
 
 import dominio.Asesino;
@@ -15,15 +17,18 @@ import dominio.Elfo;
 import dominio.Guerrero;
 import dominio.Hechicero;
 import dominio.Humano;
+import dominio.MyRandom;
 import dominio.Orco;
 import dominio.Personaje;
 import interfaz.EstadoDePersonaje;
 import interfaz.MenuBatalla;
 import interfaz.MenuInfoPersonaje;
 import inventario.Inventario;
+import inventario.Item;
 import inventario.Mochila;
 import juego.Juego;
 import mensajeria.Comando;
+import mensajeria.Paquete;
 import mensajeria.PaqueteAtacar;
 import mensajeria.PaqueteBatalla;
 import mensajeria.PaqueteFinalizarBatalla;
@@ -83,6 +88,8 @@ public class EstadoBatalla extends Estado {
 		
 		// limpio la accion del mouse
 		juego.getHandlerMouse().setNuevoClick(false);
+		
+		paqueteItem = new PaqueteItem();
 		
 	}
 
@@ -320,4 +327,62 @@ public class EstadoBatalla extends Estado {
 	public Personaje getEnemigo() {
 		return enemigo;
 	}
+	
+	public PaqueteItem getPaqueteItem() {
+		return paqueteItem;
+	}
+	
+	public void setPaqueteItem(PaqueteItem paqueteItem) {
+		this.paqueteItem = paqueteItem;
+	}
+	
+	public Item obtenerItem(int idItem) {
+		try {
+			
+			paqueteItem.setComando(Comando.OBTENERITEM);
+			paqueteItem.setIdItem(idItem);
+			// Envio el paquete pidiendo un item
+			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteItem));
+			Item item = new Item(this.paqueteItem.getIdItem(),
+								this.paqueteItem.getBonoAtaque(),
+								this.paqueteItem.getBonoDefensa(),
+								this.paqueteItem.getBonoMagia(),
+								this.paqueteItem.getBonoSalud(),
+								this.paqueteItem.getBonoEnergia(),
+								this.paqueteItem.getTipo(),
+								this.paqueteItem.getNombre(),
+								"desequipado");
+		
+			
+			return item;
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Fallo la conexi�n con el servidor.");
+			e.printStackTrace();
+		}
+		return new Item();
+	}
+	
+	public Item obtenerItemRandom() {
+		
+		MyRandom randomInt = new MyRandom();
+		//PaqueteItem pi = new PaqueteItem();
+			
+		try {
+			paqueteItem.setComando(Comando.CANTIDADITEMS);
+			
+			//PIDO CANTIDAD DE ITEMS EN LA BASE:
+			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteItem));
+			int cantidadItems = this.getPaqueteItem().getCantidad();
+			
+			Item itemRandom = this.obtenerItem(randomInt.nextInt(cantidadItems));
+			
+			return itemRandom;
+			
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Fallo la conexi�n con el servidor.");
+			e.printStackTrace();
+		} 
+		return new Item();
+	}
+	
 }
