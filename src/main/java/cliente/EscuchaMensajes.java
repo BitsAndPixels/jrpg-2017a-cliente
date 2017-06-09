@@ -99,6 +99,9 @@ public class EscuchaMensajes extends Thread {
 						juego.actualizarPersonaje();
 						juego.getEstadoJuego().actualizarPersonaje();
 					}
+//				case Comando.INVENTARIO:
+//					paquetePersonaje = (PaquetePersonaje) gson.fromJson(objetoLeido, PaquetePersonaje.class);
+//					juego.getPersonaje().setEstado(Estado.estadoInventario);
 				}	
 			}
 		} catch (Exception e) {
