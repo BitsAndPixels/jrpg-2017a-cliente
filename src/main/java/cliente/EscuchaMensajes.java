@@ -18,6 +18,9 @@ import mensajeria.PaqueteBatalla;
 import mensajeria.PaqueteDeMovimientos;
 import mensajeria.PaqueteDePersonajes;
 import mensajeria.PaqueteFinalizarBatalla;
+import mensajeria.PaqueteInventario;
+import mensajeria.PaqueteItem;
+import mensajeria.PaqueteMochila;
 import mensajeria.PaqueteMovimiento;
 import mensajeria.PaquetePersonaje;
 
@@ -49,6 +52,10 @@ public class EscuchaMensajes extends Thread {
 			PaqueteFinalizarBatalla paqueteFinalizarBatalla;
 			personajesConectados = new HashMap<>();
 			ubicacionPersonajes = new HashMap<>();
+			
+			PaqueteItem paqueteItem;
+			PaqueteInventario paqueteInventario;
+			PaqueteMochila paqueteMochila;
 
 			while (true) {
 				
@@ -99,6 +106,29 @@ public class EscuchaMensajes extends Thread {
 						juego.actualizarPersonaje();
 						juego.getEstadoJuego().actualizarPersonaje();
 					}
+				case Comando.OBTENERITEM:
+					paqueteItem = (PaqueteItem) gson.fromJson(objetoLeido, PaqueteItem.class);
+					juego.getEstadoBatalla().setPaqueteItem(paqueteItem);
+					break;
+					
+				case Comando.CANTIDADITEMS:
+					paqueteItem = (PaqueteItem) gson.fromJson(objetoLeido, PaqueteItem.class);
+					juego.getEstadoBatalla().getPaqueteItem().setCantidad(paqueteItem.getCantidad());
+					break;
+					
+				case Comando.OBTENERINVENTARIO:
+					paqueteInventario = (PaqueteInventario) gson.fromJson(objetoLeido, PaqueteInventario.class);
+					juego.getEstadoBatalla().setPaqueteInventario(paqueteInventario);
+					break;
+				
+				case Comando.OBTENERMOCHILA:
+					paqueteMochila = (PaqueteMochila) gson.fromJson(objetoLeido, PaqueteMochila.class);
+					juego.getEstadoBatalla().setPaqueteMochila(paqueteMochila);
+					break;
+					
+//				case Comando.INVENTARIO:
+//					paquetePersonaje = (PaquetePersonaje) gson.fromJson(objetoLeido, PaquetePersonaje.class);
+//					juego.getPersonaje().setEstado(Estado.estadoInventario);
 				}	
 			}
 		} catch (Exception e) {
