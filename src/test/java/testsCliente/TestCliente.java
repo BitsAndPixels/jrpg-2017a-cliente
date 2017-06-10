@@ -376,14 +376,13 @@ public class TestCliente {
 			// Envio el paquete pidiendo un inventario
 			cliente.getSalida().writeObject(gson.toJson(pm));
 			
-			// Recibo el inventario:
+			// Recibo la mochila:
 			PaqueteMochila paqueteMochila = (PaqueteMochila) gson
 					.fromJson((String) cliente.getEntrada().readObject(), PaqueteMochila.class);
 
-			System.out.println(paqueteMochila.getItems().get(0));
+			// Envio el paquete pidiendo un item
 			pitem.setComando(Comando.OBTENERITEM);
 			pitem.setIdItem(paqueteMochila.getItems().get(0));
-			// Envio el paquete pidiendo un item
 			cliente.getSalida().writeObject(gson.toJson(pitem));
 
 			// Recibo el item:
@@ -401,6 +400,7 @@ public class TestCliente {
 			
 			Assert.assertEquals(1, (int) paqueteMochila.getItems().get(0));
 			Assert.assertEquals("Espada",paqueteItem.getNombre());
+			Assert.assertEquals(15, paqueteMochila.getComando());
 			
 			
 			

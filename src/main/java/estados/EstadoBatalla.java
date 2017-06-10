@@ -77,6 +77,10 @@ public class EstadoBatalla extends Estado {
 		paquetePersonaje = juego.getEscuchaMensajes().getPersonajesConectados().get(paqueteBatalla.getId());
 		paqueteEnemigo = juego.getEscuchaMensajes().getPersonajesConectados().get(paqueteBatalla.getIdEnemigo());
 
+		paqueteItem = new PaqueteItem();
+		paqueteInventario = new PaqueteInventario();
+		paqueteMochila = new PaqueteMochila();
+		
 		crearPersonajes();
 		
 		menuBatalla = new MenuBatalla(miTurno, personaje);
@@ -94,9 +98,7 @@ public class EstadoBatalla extends Estado {
 		// limpio la accion del mouse
 		juego.getHandlerMouse().setNuevoClick(false);
 		
-		paqueteItem = new PaqueteItem();
-		paqueteInventario = new PaqueteInventario();
-		paqueteMochila = new PaqueteMochila();
+		
 		
 	}
 
@@ -218,8 +220,10 @@ public class EstadoBatalla extends Estado {
 		int experiencia = paquetePersonaje.getExperiencia();
 		int nivel = paquetePersonaje.getNivel();
 		int id = paquetePersonaje.getId();
-		Mochila mochila = this.crearMochila(id);
-		Inventario inventario = this.crearInventario(id);
+//		Mochila mochila = this.crearMochila(paquetePersonaje.getId());
+//		Inventario inventario = this.crearInventario(paquetePersonaje.getId());
+		Mochila mochila = new Mochila();
+		Inventario inventario = new Inventario();
 
 		Casta casta = null;
 		if (paquetePersonaje.getCasta().equals("Guerrero")) {
@@ -251,6 +255,10 @@ public class EstadoBatalla extends Estado {
 		experiencia = paqueteEnemigo.getExperiencia();
 		nivel = paqueteEnemigo.getNivel();
 		id = paqueteEnemigo.getId();
+//		Mochila mochilaEnemigo = this.crearMochila(paqueteEnemigo.getId());
+//		Inventario inventarioEnemigo = this.crearInventario(paqueteEnemigo.getId());
+		Mochila mochilaEnemigo = new Mochila();
+		Inventario inventarioEnemigo = new Inventario();
 
 		casta = null;
 		if (paqueteEnemigo.getCasta().equals("Guerrero")) {
@@ -263,13 +271,13 @@ public class EstadoBatalla extends Estado {
 
 		if (paqueteEnemigo.getRaza().equals("Humano")) {
 			enemigo = new Humano(nombre, salud, energia, fuerza, destreza, inteligencia, casta,
-					experiencia, nivel, id, new Inventario(), new Mochila());
+					experiencia, nivel, id, inventarioEnemigo, mochilaEnemigo);
 		} else if (paqueteEnemigo.getRaza().equals("Orco")) {
 			enemigo = new Orco(nombre, salud, energia, fuerza, destreza, inteligencia, casta,
-					experiencia, nivel, id, new Inventario(), new Mochila());
+					experiencia, nivel, id, inventarioEnemigo, mochilaEnemigo);
 		} else if (paqueteEnemigo.getRaza().equals("Elfo")) {
 			enemigo = new Elfo(nombre, salud, energia, fuerza, destreza, inteligencia, casta,
-					experiencia, nivel, id, new Inventario(), new Mochila());
+					experiencia, nivel, id, inventarioEnemigo, mochilaEnemigo);
 		}
 	}
 
