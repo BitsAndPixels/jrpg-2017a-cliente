@@ -15,6 +15,7 @@ import mensajeria.Comando;
 import mensajeria.Paquete;
 import mensajeria.PaqueteInventario;
 import mensajeria.PaqueteItem;
+import mensajeria.PaqueteMochila;
 import mensajeria.PaquetePersonaje;
 import mensajeria.PaqueteUsuario;
 
@@ -353,6 +354,52 @@ public class TestCliente {
 			cliente.getSocket().close();
 			
 			Assert.assertEquals(1, paqueteInventario.getManoDer());
+			Assert.assertEquals("Espada",paqueteItem.getNombre());
+			
+			
+			
+		} catch (IOException | JsonSyntaxException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	@Test
+	public void testObtenerMochila() {
+		Gson gson = new Gson();
+		Cliente cliente = new Cliente();
+		PaqueteMochila pm = new PaqueteMochila();
+		PaqueteItem pitem = new PaqueteItem();
+		
+		try {
+			pm.setComando(Comando.OBTENERMOCHILA);
+			pm.setIdPje(38);
+			// Envio el paquete pidiendo un inventario
+			cliente.getSalida().writeObject(gson.toJson(pm));
+			
+			// Recibo el inventario:
+			PaqueteMochila paqueteMochila = (PaqueteMochila) gson
+					.fromJson((String) cliente.getEntrada().readObject(), PaqueteMochila.class);
+
+			System.out.println(paqueteMochila.getItems().get(0));
+			pitem.setComando(Comando.OBTENERITEM);
+			pitem.setIdItem(paqueteMochila.getItems().get(0));
+			// Envio el paquete pidiendo un item
+			cliente.getSalida().writeObject(gson.toJson(pitem));
+
+			// Recibo el item:
+			PaqueteItem paqueteItem = (PaqueteItem) gson
+					.fromJson((String) cliente.getEntrada().readObject(), PaqueteItem.class);
+			
+			// Cierro Conexion:
+			Paquete p = new Paquete();
+			p.setComando(Comando.DESCONECTAR);
+			p.setIp(cliente.getMiIp());
+			cliente.getSalida().writeObject(gson.toJson(p));
+			cliente.getSalida().close();
+			cliente.getEntrada().close();
+			cliente.getSocket().close();
+			
+			Assert.assertEquals(1, (int) paqueteMochila.getItems().get(0));
 			Assert.assertEquals("Espada",paqueteItem.getNombre());
 			
 			
