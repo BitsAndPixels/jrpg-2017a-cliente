@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 import javax.swing.JOptionPane;
 
@@ -32,7 +35,9 @@ import mensajeria.Paquete;
 import mensajeria.PaqueteAtacar;
 import mensajeria.PaqueteBatalla;
 import mensajeria.PaqueteFinalizarBatalla;
+import mensajeria.PaqueteInventario;
 import mensajeria.PaqueteItem;
+import mensajeria.PaqueteMochila;
 import mensajeria.PaquetePersonaje;
 import mundo.Mundo;
 import recursos.Recursos;
@@ -59,8 +64,8 @@ public class EstadoBatalla extends Estado {
 	
 	private MenuBatalla menuBatalla;
 	
-//	private PaqueteMochila paqueteMochila;
-//	private PaqueteInventario paqueteInventario;
+	private PaqueteMochila paqueteMochila;
+	private PaqueteInventario paqueteInventario;
 	private PaqueteItem paqueteItem;
 	
 	
@@ -90,6 +95,8 @@ public class EstadoBatalla extends Estado {
 		juego.getHandlerMouse().setNuevoClick(false);
 		
 		paqueteItem = new PaqueteItem();
+		paqueteInventario = new PaqueteInventario();
+		paqueteMochila = new PaqueteMochila();
 		
 	}
 
@@ -211,8 +218,8 @@ public class EstadoBatalla extends Estado {
 		int experiencia = paquetePersonaje.getExperiencia();
 		int nivel = paquetePersonaje.getNivel();
 		int id = paquetePersonaje.getId();
-		Mochila mochila = new Mochila();
-		Inventario inventario = new Inventario();
+		Mochila mochila = this.crearMochila(id);
+		Inventario inventario = this.crearInventario(id);
 
 		Casta casta = null;
 		if (paquetePersonaje.getCasta().equals("Guerrero")) {
@@ -336,6 +343,22 @@ public class EstadoBatalla extends Estado {
 		this.paqueteItem = paqueteItem;
 	}
 	
+	public PaqueteMochila getPaqueteMochila() {
+		return paqueteMochila;
+	}
+
+	public void setPaqueteMochila(PaqueteMochila paqueteMochila) {
+		this.paqueteMochila = paqueteMochila;
+	}
+
+	public PaqueteInventario getPaqueteInventario() {
+		return paqueteInventario;
+	}
+
+	public void setPaqueteInventario(PaqueteInventario paqueteInventario) {
+		this.paqueteInventario = paqueteInventario;
+	}
+
 	public Item obtenerItem(int idItem) {
 		try {
 			
@@ -370,10 +393,11 @@ public class EstadoBatalla extends Estado {
 		try {
 			paqueteItem.setComando(Comando.CANTIDADITEMS);
 			
-			//PIDO CANTIDAD DE ITEMS EN LA BASE:
+			// PIDO CANTIDAD DE ITEMS EN LA BASE:
 			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteItem));
 			int cantidadItems = this.getPaqueteItem().getCantidad();
 			
+			// GENERO ITEM RANDOM
 			Item itemRandom = this.obtenerItem(randomInt.nextInt(cantidadItems));
 			
 			return itemRandom;
@@ -383,6 +407,83 @@ public class EstadoBatalla extends Estado {
 			e.printStackTrace();
 		} 
 		return new Item();
+	}
+	
+	private Inventario crearInventario(int idPersonaje) {
+		Inventario inventario = new Inventario();
+		try {
+			
+			paqueteInventario.setComando(Comando.OBTENERINVENTARIO);
+			paqueteInventario.setIdPje(idPersonaje);
+			// Envio el paquete pidiendo el inventario asociado al personaje
+			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteInventario));
+			
+			// ARMO EL INVENTARIO
+						
+			inventario.setIdInventario(this.paqueteInventario.getIdInventario());
+			
+			if (this.paqueteInventario.getManoDer() > 0){
+				inventario.setManoDer(this.obtenerItem(this.paqueteInventario.getManoDer()));
+				inventario.getManoDer().serEquipado();
+			}
+			if (this.paqueteInventario.getManoIzq() > 0) {
+				inventario.setManoIzq(this.obtenerItem(this.paqueteInventario.getManoIzq()));
+				inventario.getManoIzq().serEquipado();
+			}
+			if (this.paqueteInventario.getPie() > 0) {
+				inventario.setPie(this.obtenerItem(this.paqueteInventario.getPie()));
+				inventario.getPie().serEquipado();
+			}
+			if (this.paqueteInventario.getCabeza() > 0) {
+				inventario.setCabeza(this.obtenerItem(this.paqueteInventario.getCabeza()));
+				inventario.getCabeza().serEquipado();
+			}
+			if (this.paqueteInventario.getPecho() > 0) {
+				inventario.setPecho(this.obtenerItem(this.paqueteInventario.getPecho()));
+				inventario.getPecho().serEquipado();
+			}	
+			if (this.paqueteInventario.getAccesorio() > 0) {
+				inventario.setAccesorio(this.obtenerItem(this.paqueteInventario.getAccesorio()));
+				inventario.getAccesorio().serEquipado();
+			}		
+			
+			return inventario;
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Fallo la conexi�n con el servidor.");
+			e.printStackTrace();
+		}
+		
+		
+		return inventario;
+	}
+
+	private Mochila crearMochila(int idPersonaje) {
+		Mochila mochila = new Mochila();
+		try {
+			
+			paqueteMochila.setComando(Comando.OBTENERMOCHILA);
+			paqueteMochila.setIdPje(idPersonaje);
+			// Envio el paquete pidiendo la mochila asociada al personaje
+			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteMochila));
+			
+			// ARMO LA MOCHILA
+			mochila.setIdMochila(paqueteMochila.getIdMochila());
+			
+			int idItem=0;
+			
+			for (int i=0; i<paqueteMochila.getItems().size(); i++) {
+				idItem = paqueteMochila.getItems().get(i);
+				if (idItem > 0) {
+					mochila.agregaItem(this.obtenerItem(idItem));
+				}
+			}
+
+			return mochila;
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Fallo la conexi�n con el servidor.");
+			e.printStackTrace();
+		}
+		return mochila;
 	}
 	
 }

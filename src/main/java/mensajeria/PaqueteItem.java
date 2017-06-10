@@ -84,5 +84,9 @@ public class PaqueteItem extends Paquete implements Serializable, Cloneable{
 		this.cantidad = cantidad;
 	}
 	
-	
+	public Object clone() {
+		Object obj = null;
+		obj = super.clone();
+		return obj;
+	}
 }

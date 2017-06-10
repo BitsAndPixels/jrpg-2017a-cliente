@@ -13,6 +13,7 @@ import com.google.gson.JsonSyntaxException;
 import cliente.Cliente;
 import mensajeria.Comando;
 import mensajeria.Paquete;
+import mensajeria.PaqueteInventario;
 import mensajeria.PaqueteItem;
 import mensajeria.PaquetePersonaje;
 import mensajeria.PaqueteUsuario;
@@ -309,6 +310,52 @@ public class TestCliente {
 			cliente.getSocket().close();
 			
 			Assert.assertEquals(7, paqueteItem.getCantidad());
+			
+		} catch (IOException | JsonSyntaxException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Test
+	public void testObtenerInventario() {
+		Gson gson = new Gson();
+		Cliente cliente = new Cliente();
+		PaqueteInventario pi = new PaqueteInventario();
+		PaqueteItem pitem = new PaqueteItem();
+		
+		try {
+			pi.setComando(Comando.OBTENERINVENTARIO);
+			pi.setIdPje(38);
+			// Envio el paquete pidiendo un inventario
+			cliente.getSalida().writeObject(gson.toJson(pi));
+			
+			// Recibo el inventario:
+			PaqueteInventario paqueteInventario = (PaqueteInventario) gson
+					.fromJson((String) cliente.getEntrada().readObject(), PaqueteInventario.class);
+
+			pitem.setComando(Comando.OBTENERITEM);
+			pitem.setIdItem(paqueteInventario.getManoDer());
+			// Envio el paquete pidiendo un item
+			cliente.getSalida().writeObject(gson.toJson(pitem));
+
+			// Recibo el item:
+			PaqueteItem paqueteItem = (PaqueteItem) gson
+					.fromJson((String) cliente.getEntrada().readObject(), PaqueteItem.class);
+			
+			// Cierro Conexion:
+			Paquete p = new Paquete();
+			p.setComando(Comando.DESCONECTAR);
+			p.setIp(cliente.getMiIp());
+			cliente.getSalida().writeObject(gson.toJson(p));
+			cliente.getSalida().close();
+			cliente.getEntrada().close();
+			cliente.getSocket().close();
+			
+			Assert.assertEquals(1, paqueteInventario.getManoDer());
+			Assert.assertEquals("Espada",paqueteItem.getNombre());
+			
+			
 			
 		} catch (IOException | JsonSyntaxException | ClassNotFoundException e) {
 			e.printStackTrace();
