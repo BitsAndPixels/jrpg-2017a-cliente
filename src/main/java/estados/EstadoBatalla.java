@@ -10,8 +10,6 @@ import java.util.ListIterator;
 
 import javax.swing.JOptionPane;
 
-import org.junit.Assert;
-
 import com.google.gson.Gson;
 
 import dominio.Asesino;
