@@ -67,6 +67,7 @@ test {
 checkstyle {
 	configFile = new File(rootDir, "src/test/resources/sun_checks.xml")
 	ignoreFailures = true
+	toolVersion = 5.7
 }
 
 /*cobertura {
@@ -124,7 +125,7 @@ task fatJar(type: Jar) {
 
 findbugs {
     ignoreFailures = true
-    //toolVersion = "2.0.1"
+    toolVersion = "2.0.1"
 }
 
 
