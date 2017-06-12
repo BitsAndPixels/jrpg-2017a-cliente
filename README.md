@@ -1,3 +1,6 @@
+## Travis CI:
+[![Build Status](https://travis-ci.org/BitsAndPixels/jrpg-2017a-cliente.svg?branch=master)](https://travis-ci.org/BitsAndPixels/jrpg-2017a-cliente)
+
 # World Of Middle Earth (WOME) - cliente
 
 ## Sobre las personas
