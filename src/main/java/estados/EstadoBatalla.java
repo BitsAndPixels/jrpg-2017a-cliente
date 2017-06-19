@@ -61,6 +61,7 @@ public class EstadoBatalla extends Estado {
 	private MenuBatalla menuBatalla;
 
 	private PaqueteItem paqueteItem;
+	private Item itemGanado;
 	
 	
 	public EstadoBatalla(Juego juego, PaqueteBatalla paqueteBatalla) {
@@ -71,7 +72,9 @@ public class EstadoBatalla extends Estado {
 		paquetePersonaje = juego.getEscuchaMensajes().getPersonajesConectados().get(paqueteBatalla.getId());
 		paqueteEnemigo = juego.getEscuchaMensajes().getPersonajesConectados().get(paqueteBatalla.getIdEnemigo());
 
+		// ITEM RANDOM PREMIO A GANAR
 		paqueteItem = new PaqueteItem();
+		solicitarItem();
 		
 		crearPersonajes();
 		
@@ -159,12 +162,16 @@ public class EstadoBatalla extends Estado {
 
 
 				if (haySpellSeleccionada && seRealizoAccion) {
+					// ACA GANA EL PERSONAJE
 					if (!enemigo.estaVivo()) {
 						juego.getEstadoJuego().setHaySolicitud(true, juego.getPersonaje(), MenuInfoPersonaje.menuGanarBatalla);
 						if(personaje.ganarExperiencia(enemigo.getNivel() * 40)){
 							juego.getPersonaje().setNivel(personaje.getNivel());
 							juego.getEstadoJuego().setHaySolicitud(true, juego.getPersonaje(), MenuInfoPersonaje.menuSubirNivel);
 						}
+						// GANA ITEM RANDOM
+						ganarItem(personaje);
+						
 						finalizarBatalla();
 						Estado.setEstado(juego.getEstadoJuego());
 					} else {
@@ -212,8 +219,6 @@ public class EstadoBatalla extends Estado {
 		int experiencia = paquetePersonaje.getExperiencia();
 		int nivel = paquetePersonaje.getNivel();
 		int id = paquetePersonaje.getId();
-//		Mochila mochila = this.crearMochila(paquetePersonaje.getId());
-//		Inventario inventario = this.crearInventario(paquetePersonaje.getId());
 		Mochila mochila = paquetePersonaje.getMochila();
 		Inventario inventario = paquetePersonaje.getInventario();
 
@@ -247,10 +252,6 @@ public class EstadoBatalla extends Estado {
 		experiencia = paqueteEnemigo.getExperiencia();
 		nivel = paqueteEnemigo.getNivel();
 		id = paqueteEnemigo.getId();
-//		Mochila mochilaEnemigo = this.crearMochila(paqueteEnemigo.getId());
-//		Inventario inventarioEnemigo = this.crearInventario(paqueteEnemigo.getId());
-//		Mochila mochilaEnemigo = new Mochila();
-//		Inventario inventarioEnemigo = new Inventario();
 		mochila = paqueteEnemigo.getMochila();
 		inventario = paqueteEnemigo.getInventario();
 
@@ -295,6 +296,8 @@ public class EstadoBatalla extends Estado {
 			paquetePersonaje.setDestreza(personaje.getDestreza());
 			paquetePersonaje.setFuerza(personaje.getFuerza());
 			paquetePersonaje.setInteligencia(personaje.getInteligencia());
+			paquetePersonaje.setMochila(personaje.getMochila());
+			paquetePersonaje.setInventario(personaje.getInventario());
 			
 			paqueteEnemigo.setSaludTope(enemigo.getSaludTope());
 			paqueteEnemigo.setEnergiaTope(enemigo.getEnergiaTope());
@@ -303,6 +306,8 @@ public class EstadoBatalla extends Estado {
 			paqueteEnemigo.setDestreza(enemigo.getDestreza());
 			paqueteEnemigo.setFuerza(enemigo.getFuerza());
 			paqueteEnemigo.setInteligencia(enemigo.getInteligencia());
+			paqueteEnemigo.setMochila(enemigo.getMochila());
+			paqueteEnemigo.setInventario(enemigo.getInventario());
 			
 			paquetePersonaje.setComando(Comando.ACTUALIZARPERSONAJE);
 			paqueteEnemigo.setComando(Comando.ACTUALIZARPERSONAJE);
@@ -345,132 +350,35 @@ public class EstadoBatalla extends Estado {
 		this.paqueteItem = paqueteItem;
 	}
 	
+	public Item getItemGanado() {
+		return itemGanado;
+	}
 
-	public Item obtenerItem(int idItem) {
+	public void setItemGanado(Item itemGanado) {
+		this.itemGanado = itemGanado;
+	}
+
+	public void solicitarItem() {
 		try {
 			
-			paqueteItem.setComando(Comando.OBTENERITEM);
-			paqueteItem.setIdItem(idItem);
+			paqueteItem.setComando(Comando.OBTENERITEMRANDOM);
 			// Envio el paquete pidiendo un item
 			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteItem));
-			Item item = new Item(this.paqueteItem.getIdItem(),
-								this.paqueteItem.getBonoAtaque(),
-								this.paqueteItem.getBonoDefensa(),
-								this.paqueteItem.getBonoMagia(),
-								this.paqueteItem.getBonoSalud(),
-								this.paqueteItem.getBonoEnergia(),
-								this.paqueteItem.getTipo(),
-								this.paqueteItem.getNombre(),
-								"desequipado");
-		
 			
-			return item;
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexi�n con el servidor.");
 			e.printStackTrace();
 		}
-		return new Item();
 	}
 	
-	public Item obtenerItemRandom() {
-		
-		MyRandom randomInt = new MyRandom();
-		//PaqueteItem pi = new PaqueteItem();
+	public void ganarItem(Personaje personaje) {
+		if (personaje.getMochila().agregaItem(itemGanado)) {
+			//System.out.println("Item agregado a la mochila " + personaje.getMochila().obtenerItem(itemGanado.getIdItem()).getIdItem());
+			personaje.equiparItemEnInventario(itemGanado.getIdItem());
 			
-		try {
-			paqueteItem.setComando(Comando.CANTIDADITEMS);
-			
-			// PIDO CANTIDAD DE ITEMS EN LA BASE:
-			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteItem));
-			int cantidadItems = this.getPaqueteItem().getCantidad();
-			
-			// GENERO ITEM RANDOM
-			Item itemRandom = this.obtenerItem(randomInt.nextInt(cantidadItems));
-			
-			return itemRandom;
-			
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Fallo la conexi�n con el servidor.");
-			e.printStackTrace();
-		} 
-		return new Item();
+		}
+		else
+			System.out.println("No se pudo equipar item");
 	}
-	
-//	private Inventario crearInventario(int idPersonaje) {
-//		Inventario inventario = new Inventario();
-//		try {
-//			
-//			paqueteInventario.setComando(Comando.OBTENERINVENTARIO);
-//			paqueteInventario.setIdPje(idPersonaje);
-//			// Envio el paquete pidiendo el inventario asociado al personaje
-//			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteInventario));
-//			
-//			// ARMO EL INVENTARIO
-//						
-//			inventario.setIdInventario(this.paqueteInventario.getIdInventario());
-//			
-//			if (this.paqueteInventario.getManoDer() > 0){
-//				inventario.setManoDer(this.obtenerItem(this.paqueteInventario.getManoDer()));
-//				inventario.getManoDer().serEquipado();
-//			}
-//			if (this.paqueteInventario.getManoIzq() > 0) {
-//				inventario.setManoIzq(this.obtenerItem(this.paqueteInventario.getManoIzq()));
-//				inventario.getManoIzq().serEquipado();
-//			}
-//			if (this.paqueteInventario.getPie() > 0) {
-//				inventario.setPie(this.obtenerItem(this.paqueteInventario.getPie()));
-//				inventario.getPie().serEquipado();
-//			}
-//			if (this.paqueteInventario.getCabeza() > 0) {
-//				inventario.setCabeza(this.obtenerItem(this.paqueteInventario.getCabeza()));
-//				inventario.getCabeza().serEquipado();
-//			}
-//			if (this.paqueteInventario.getPecho() > 0) {
-//				inventario.setPecho(this.obtenerItem(this.paqueteInventario.getPecho()));
-//				inventario.getPecho().serEquipado();
-//			}	
-//			if (this.paqueteInventario.getAccesorio() > 0) {
-//				inventario.setAccesorio(this.obtenerItem(this.paqueteInventario.getAccesorio()));
-//				inventario.getAccesorio().serEquipado();
-//			}		
-//			
-//			return inventario;
-//		} catch (IOException e) {
-//			JOptionPane.showMessageDialog(null, "Fallo la conexi�n con el servidor.");
-//			e.printStackTrace();
-//		}
-//		
-//		
-//		return inventario;
-//	}
-//
-//	private Mochila crearMochila(int idPersonaje) {
-//		Mochila mochila = new Mochila();
-//		try {
-//			
-//			paqueteMochila.setComando(Comando.OBTENERMOCHILA);
-//			paqueteMochila.setIdPje(idPersonaje);
-//			// Envio el paquete pidiendo la mochila asociada al personaje
-//			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteMochila));
-//			
-//			// ARMO LA MOCHILA
-//			mochila.setIdMochila(paqueteMochila.getIdMochila());
-//			
-//			int idItem=0;
-//			
-//			for (int i=0; i<paqueteMochila.getItems().size(); i++) {
-//				idItem = paqueteMochila.getItems().get(i);
-//				if (idItem > 0) {
-//					mochila.agregaItem(this.obtenerItem(idItem));
-//				}
-//			}
-//
-//			return mochila;
-//		} catch (IOException e) {
-//			JOptionPane.showMessageDialog(null, "Fallo la conexi�n con el servidor.");
-//			e.printStackTrace();
-//		}
-//		return mochila;
-//	}
 	
 }

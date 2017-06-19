@@ -97,6 +97,7 @@ public class MenuInfoPersonaje {
 		Pantalla.centerString(g, new Rectangle(x, y + 290, menu.getWidth(), 0), "a tu oponente, sigue así");
 		Pantalla.centerString(g, new Rectangle(x, y + 310, menu.getWidth(), 0), "para lograr subir de nivel");
 		Pantalla.centerString(g, new Rectangle(x, y + 330, menu.getWidth(), 0), "y mejorar tus atributos.");
+		Pantalla.centerString(g, new Rectangle(x, y + 350, menu.getWidth(), 0), "Has Ganado un nuevo Item!");
 	}
 
 	private void graficarMenuSubirNivel(Graphics g) {

@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import cliente.Cliente;
+import inventario.*;
 import mensajeria.Comando;
 import mensajeria.Paquete;
 import mensajeria.PaqueteItem;
@@ -224,6 +225,8 @@ public class TestCliente {
 		pp.setNombre("PjTest");
 		pp.setRaza("Asesino");
 		pp.setSaludTope(10000);
+		pp.setMochila(new Mochila());
+		pp.setInventario(new Inventario());
 
 		try {
 
@@ -254,7 +257,7 @@ public class TestCliente {
 		Cliente cliente = new Cliente();
 		PaqueteItem pi = new PaqueteItem();
 		
-		pi.setComando(Comando.OBTENERITEM);
+		pi.setComando(Comando.OBTENERITEMRANDOM);
 		pi.setIdItem(5);
 		
 		try {
@@ -281,6 +284,43 @@ public class TestCliente {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	@Test
+	public void testMochilaInventario() {
+		Gson gson = new Gson();
+		Cliente cliente = new Cliente();
+
+		PaqueteUsuario pu = new PaqueteUsuario();
+		pu.setComando(Comando.INICIOSESION);
+		pu.setUsername("geralt");
+		pu.setPassword("123");
+
+		try {
+
+			// Envio el paquete de incio de sesion
+			cliente.getSalida().writeObject(gson.toJson(pu));
+
+			// Recibo el paquete con el personaje
+			PaquetePersonaje paquetePersonaje = (PaquetePersonaje) gson
+					.fromJson((String) cliente.getEntrada().readObject(), PaquetePersonaje.class);
+
+			// Cierro las conexiones
+			Paquete p = new Paquete();
+			p.setComando(Comando.DESCONECTAR);
+			p.setIp(cliente.getMiIp());
+			cliente.getSalida().writeObject(gson.toJson(p));
+			cliente.getSalida().close();
+			cliente.getEntrada().close();
+			cliente.getSocket().close();
+
+			Assert.assertEquals("Geralt", paquetePersonaje.getNombre());
+			Assert.assertEquals("Espada", paquetePersonaje.getInventario().getManoDer().getNombre());
+			Assert.assertEquals("vacio", paquetePersonaje.getInventario().getManoIzq().getEstado());
+			
+		} catch (IOException | JsonSyntaxException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 //	@Test
@@ -407,4 +447,5 @@ public class TestCliente {
 //		}
 //		
 //	}
+	
 }
