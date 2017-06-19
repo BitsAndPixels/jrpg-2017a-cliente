@@ -3,6 +3,8 @@ package mensajeria;
 import java.io.Serializable;
 
 import estados.Estado;
+import inventario.Inventario;
+import inventario.Mochila;
 
 public class PaquetePersonaje extends Paquete implements Serializable, Cloneable {
 
@@ -20,6 +22,8 @@ public class PaquetePersonaje extends Paquete implements Serializable, Cloneable
 	private int inteligencia;
 	private int nivel;
 	private int experiencia;
+	private Mochila mochila;
+	private Inventario inventario;
 
 	public PaquetePersonaje() {
 		estado = Estado.estadoOffline;
@@ -152,6 +156,24 @@ public class PaquetePersonaje extends Paquete implements Serializable, Cloneable
 
 	public void setInteligencia(int inteligencia) {
 		this.inteligencia = inteligencia;
+	}
+	
+	
+
+	public Mochila getMochila() {
+		return mochila;
+	}
+
+	public void setMochila(Mochila mochila) {
+		this.mochila = mochila;
+	}
+
+	public Inventario getInventario() {
+		return inventario;
+	}
+
+	public void setInventario(Inventario inventario) {
+		this.inventario = inventario;
 	}
 
 	public Object clone() {

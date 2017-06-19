@@ -13,9 +13,7 @@ import com.google.gson.JsonSyntaxException;
 import cliente.Cliente;
 import mensajeria.Comando;
 import mensajeria.Paquete;
-import mensajeria.PaqueteInventario;
 import mensajeria.PaqueteItem;
-import mensajeria.PaqueteMochila;
 import mensajeria.PaquetePersonaje;
 import mensajeria.PaqueteUsuario;
 
@@ -285,128 +283,128 @@ public class TestCliente {
 		
 	}
 	
-	@Test
-	public void testObtenerCantidadDeItems() {
-		Gson gson = new Gson();
-		Cliente cliente = new Cliente();
-		PaqueteItem pi = new PaqueteItem();
-		
-		pi.setComando(Comando.CANTIDADITEMS);
-		
-		try {
-			// Envio el paquete pidiendo un item
-			cliente.getSalida().writeObject(gson.toJson(pi));
-			
-			// Recibo el item:
-			PaqueteItem paqueteItem = (PaqueteItem) gson
-					.fromJson((String) cliente.getEntrada().readObject(), PaqueteItem.class);
-			
-			// Cierro Conexion:
-			Paquete p = new Paquete();
-			p.setComando(Comando.DESCONECTAR);
-			p.setIp(cliente.getMiIp());
-			cliente.getSalida().writeObject(gson.toJson(p));
-			cliente.getSalida().close();
-			cliente.getEntrada().close();
-			cliente.getSocket().close();
-			
-			Assert.assertEquals(7, paqueteItem.getCantidad());
-			
-		} catch (IOException | JsonSyntaxException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	@Test
-	public void testObtenerInventario() {
-		Gson gson = new Gson();
-		Cliente cliente = new Cliente();
-		PaqueteInventario pi = new PaqueteInventario();
-		PaqueteItem pitem = new PaqueteItem();
-		
-		try {
-			pi.setComando(Comando.OBTENERINVENTARIO);
-			pi.setIdPje(38);
-			// Envio el paquete pidiendo un inventario
-			cliente.getSalida().writeObject(gson.toJson(pi));
-			
-			// Recibo el inventario:
-			PaqueteInventario paqueteInventario = (PaqueteInventario) gson
-					.fromJson((String) cliente.getEntrada().readObject(), PaqueteInventario.class);
-
-			pitem.setComando(Comando.OBTENERITEM);
-			pitem.setIdItem(paqueteInventario.getManoDer());
-			// Envio el paquete pidiendo un item
-			cliente.getSalida().writeObject(gson.toJson(pitem));
-
-			// Recibo el item:
-			PaqueteItem paqueteItem = (PaqueteItem) gson
-					.fromJson((String) cliente.getEntrada().readObject(), PaqueteItem.class);
-			
-			// Cierro Conexion:
-			Paquete p = new Paquete();
-			p.setComando(Comando.DESCONECTAR);
-			p.setIp(cliente.getMiIp());
-			cliente.getSalida().writeObject(gson.toJson(p));
-			cliente.getSalida().close();
-			cliente.getEntrada().close();
-			cliente.getSocket().close();
-			
-			Assert.assertEquals(1, paqueteInventario.getManoDer());
-			Assert.assertEquals("Espada",paqueteItem.getNombre());
-			
-			
-			
-		} catch (IOException | JsonSyntaxException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	@Test
-	public void testObtenerMochila() {
-		Gson gson = new Gson();
-		Cliente cliente = new Cliente();
-		PaqueteMochila pm = new PaqueteMochila();
-		PaqueteItem pitem = new PaqueteItem();
-		
-		try {
-			pm.setComando(Comando.OBTENERMOCHILA);
-			pm.setIdPje(38);
-			// Envio el paquete pidiendo un inventario
-			cliente.getSalida().writeObject(gson.toJson(pm));
-			
-			// Recibo la mochila:
-			PaqueteMochila paqueteMochila = (PaqueteMochila) gson
-					.fromJson((String) cliente.getEntrada().readObject(), PaqueteMochila.class);
-
-			// Envio el paquete pidiendo un item
-			pitem.setComando(Comando.OBTENERITEM);
-			pitem.setIdItem(paqueteMochila.getItems().get(0));
-			cliente.getSalida().writeObject(gson.toJson(pitem));
-
-			// Recibo el item:
-			PaqueteItem paqueteItem = (PaqueteItem) gson
-					.fromJson((String) cliente.getEntrada().readObject(), PaqueteItem.class);
-			
-			// Cierro Conexion:
-			Paquete p = new Paquete();
-			p.setComando(Comando.DESCONECTAR);
-			p.setIp(cliente.getMiIp());
-			cliente.getSalida().writeObject(gson.toJson(p));
-			cliente.getSalida().close();
-			cliente.getEntrada().close();
-			cliente.getSocket().close();
-			
-			Assert.assertEquals(1, (int) paqueteMochila.getItems().get(0));
-			Assert.assertEquals("Espada",paqueteItem.getNombre());
-			Assert.assertEquals(15, paqueteMochila.getComando());
-			
-			
-			
-		} catch (IOException | JsonSyntaxException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-	}
+//	@Test
+//	public void testObtenerCantidadDeItems() {
+//		Gson gson = new Gson();
+//		Cliente cliente = new Cliente();
+//		PaqueteItem pi = new PaqueteItem();
+//		
+//		pi.setComando(Comando.CANTIDADITEMS);
+//		
+//		try {
+//			// Envio el paquete pidiendo un item
+//			cliente.getSalida().writeObject(gson.toJson(pi));
+//			
+//			// Recibo el item:
+//			PaqueteItem paqueteItem = (PaqueteItem) gson
+//					.fromJson((String) cliente.getEntrada().readObject(), PaqueteItem.class);
+//			
+//			// Cierro Conexion:
+//			Paquete p = new Paquete();
+//			p.setComando(Comando.DESCONECTAR);
+//			p.setIp(cliente.getMiIp());
+//			cliente.getSalida().writeObject(gson.toJson(p));
+//			cliente.getSalida().close();
+//			cliente.getEntrada().close();
+//			cliente.getSocket().close();
+//			
+//			Assert.assertEquals(7, paqueteItem.getCantidad());
+//			
+//		} catch (IOException | JsonSyntaxException | ClassNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		
+//	}
+//	
+//	@Test
+//	public void testObtenerInventario() {
+//		Gson gson = new Gson();
+//		Cliente cliente = new Cliente();
+//		PaqueteInventario pi = new PaqueteInventario();
+//		PaqueteItem pitem = new PaqueteItem();
+//		
+//		try {
+//			pi.setComando(Comando.OBTENERINVENTARIO);
+//			pi.setIdPje(38);
+//			// Envio el paquete pidiendo un inventario
+//			cliente.getSalida().writeObject(gson.toJson(pi));
+//			
+//			// Recibo el inventario:
+//			PaqueteInventario paqueteInventario = (PaqueteInventario) gson
+//					.fromJson((String) cliente.getEntrada().readObject(), PaqueteInventario.class);
+//
+//			pitem.setComando(Comando.OBTENERITEM);
+//			pitem.setIdItem(paqueteInventario.getManoDer());
+//			// Envio el paquete pidiendo un item
+//			cliente.getSalida().writeObject(gson.toJson(pitem));
+//
+//			// Recibo el item:
+//			PaqueteItem paqueteItem = (PaqueteItem) gson
+//					.fromJson((String) cliente.getEntrada().readObject(), PaqueteItem.class);
+//			
+//			// Cierro Conexion:
+//			Paquete p = new Paquete();
+//			p.setComando(Comando.DESCONECTAR);
+//			p.setIp(cliente.getMiIp());
+//			cliente.getSalida().writeObject(gson.toJson(p));
+//			cliente.getSalida().close();
+//			cliente.getEntrada().close();
+//			cliente.getSocket().close();
+//			
+//			Assert.assertEquals(1, paqueteInventario.getManoDer());
+//			Assert.assertEquals("Espada",paqueteItem.getNombre());
+//			
+//			
+//			
+//		} catch (IOException | JsonSyntaxException | ClassNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		
+//	}
+//	@Test
+//	public void testObtenerMochila() {
+//		Gson gson = new Gson();
+//		Cliente cliente = new Cliente();
+//		PaqueteMochila pm = new PaqueteMochila();
+//		PaqueteItem pitem = new PaqueteItem();
+//		
+//		try {
+//			pm.setComando(Comando.OBTENERMOCHILA);
+//			pm.setIdPje(38);
+//			// Envio el paquete pidiendo un inventario
+//			cliente.getSalida().writeObject(gson.toJson(pm));
+//			
+//			// Recibo la mochila:
+//			PaqueteMochila paqueteMochila = (PaqueteMochila) gson
+//					.fromJson((String) cliente.getEntrada().readObject(), PaqueteMochila.class);
+//
+//			// Envio el paquete pidiendo un item
+//			pitem.setComando(Comando.OBTENERITEM);
+//			pitem.setIdItem(paqueteMochila.getItems().get(0));
+//			cliente.getSalida().writeObject(gson.toJson(pitem));
+//
+//			// Recibo el item:
+//			PaqueteItem paqueteItem = (PaqueteItem) gson
+//					.fromJson((String) cliente.getEntrada().readObject(), PaqueteItem.class);
+//			
+//			// Cierro Conexion:
+//			Paquete p = new Paquete();
+//			p.setComando(Comando.DESCONECTAR);
+//			p.setIp(cliente.getMiIp());
+//			cliente.getSalida().writeObject(gson.toJson(p));
+//			cliente.getSalida().close();
+//			cliente.getEntrada().close();
+//			cliente.getSocket().close();
+//			
+//			Assert.assertEquals(1, (int) paqueteMochila.getItems().get(0));
+//			Assert.assertEquals("Espada",paqueteItem.getNombre());
+//			Assert.assertEquals(15, paqueteMochila.getComando());
+//			
+//			
+//			
+//		} catch (IOException | JsonSyntaxException | ClassNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		
+//	}
 }
