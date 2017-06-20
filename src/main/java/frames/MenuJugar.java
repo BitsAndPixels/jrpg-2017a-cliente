@@ -31,7 +31,6 @@ public class MenuJugar extends JFrame {
 				new Point(0,0),"custom cursor"));
 		
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
 		// En caso de cerrar la ventana
 		addWindowListener(new WindowAdapter() {
 			@Override
