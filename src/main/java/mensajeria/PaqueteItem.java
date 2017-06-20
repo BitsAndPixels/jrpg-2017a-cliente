@@ -2,6 +2,8 @@ package mensajeria;
 
 import java.io.Serializable;
 
+import inventario.Item;
+
 public class PaqueteItem extends Paquete implements Serializable, Cloneable{
 	
 	private int idItem;
@@ -89,4 +91,18 @@ public class PaqueteItem extends Paquete implements Serializable, Cloneable{
 		obj = super.clone();
 		return obj;
 	}
+	
+	public Item crearItem() { 
+		Item item = new Item(this.getIdItem(), 
+				this.getBonoAtaque(), 
+				this.getBonoDefensa(), 
+				this.getBonoMagia(), 
+				this.getBonoSalud(), 
+				this.getBonoEnergia(), 
+				this.getTipo(), 
+				this.getNombre(), 
+				"desequipado"); 
+		return item; 
+	} 
+	
 }
