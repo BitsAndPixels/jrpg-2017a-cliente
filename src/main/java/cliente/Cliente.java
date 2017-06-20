@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 
+import chat.Chat;
 import frames.*;
 import juego.Juego;
 import mensajeria.Comando;
@@ -24,7 +25,8 @@ public class Cliente extends Thread {
 	private String miIp;
 	private ObjectInputStream entrada;
 	private ObjectOutputStream salida;
-	
+	private Chat chat;
+
 	// Objeto gson
 	private final Gson gson = new Gson();
 	
@@ -119,7 +121,7 @@ public class Cliente extends Thread {
 					switch (paquete.getComando()) {
 					
 					case Comando.REGISTRO:
-						if (paquete.getMensaje().equals(Paquete.msjExito)) {
+						if (paquete.getMensajeChat().equals(Paquete.msjExito)) {
 
 							// Abro el menu para la creaci�n del personaje
 							MenuCreacionPj menuCreacionPJ = new MenuCreacionPj(this, paquetePersonaje);
@@ -140,7 +142,7 @@ public class Cliente extends Thread {
 							paqueteUsuario.setInicioSesion(true);
 							
 						} else {
-							if (paquete.getMensaje().equals(Paquete.msjFracaso))
+							if (paquete.getMensajeChat().equals(Paquete.msjFracaso))
 								JOptionPane.showMessageDialog(null, "No se pudo registrar.");
 
 							// El usuario no pudo iniciar sesi�n
@@ -149,7 +151,7 @@ public class Cliente extends Thread {
 						break;
 	
 					case Comando.INICIOSESION:
-						if (paquete.getMensaje().equals(Paquete.msjExito)) {
+						if (paquete.getMensajeChat().equals(Paquete.msjExito)) {
 							
 							// El usuario ya inicio sesi�n
 							paqueteUsuario.setInicioSesion(true);
@@ -158,7 +160,7 @@ public class Cliente extends Thread {
 							paquetePersonaje = (PaquetePersonaje) gson.fromJson(cadenaLeida, PaquetePersonaje.class);
 
 						} else {
-							if (paquete.getMensaje().equals(Paquete.msjFracaso))
+							if (paquete.getMensajeChat().equals(Paquete.msjFracaso))
 								JOptionPane.showMessageDialog(null, "Error al iniciar sesion. Revise el usuario y la contrase�a");
 	
 							// El usuario no pudo iniciar sesi�n
@@ -201,6 +203,10 @@ public class Cliente extends Thread {
 				// Muestro el menu de carga
 				menuCarga = new MenuCarga(this);
 				menuCarga.setVisible(true);
+				
+				// Arranco la ventana de chat
+				chat=new Chat(this);
+				chat.setVisible(true);
 				
 				// Espero que se carguen todos los recursos
 				wait();
@@ -266,5 +272,9 @@ public class Cliente extends Thread {
 	
 	public MenuCarga getMenuCarga() {
 		return menuCarga;
+	}
+
+	public Chat getChat() {
+		return chat;
 	}
 }

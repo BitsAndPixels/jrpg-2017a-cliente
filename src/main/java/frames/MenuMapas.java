@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import chat.Chat;
 import cliente.Cliente;
 
 import java.awt.Font;
@@ -132,12 +133,19 @@ public class MenuMapas extends JFrame {
 		btnAubenor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				synchronized(cliente){
+			//		abrirVentanaChat(cliente); //intento abrir la ventana de chat
 					cliente.getPaquetePersonaje().setMapa(1);
 					cliente.notify();
+					
 				}
 				dispose();
 			}
 		});
 	}
+	
+//	private void abrirVentanaChat(Cliente cliente){
+//		Chat ventanaChat= new Chat(cliente);//"Frame2" es el nombre que tu le pusiste a tu 2do jframe
+//		ventanaChat.setVisible(true);
+//	}
 }
 
