@@ -2,11 +2,14 @@ package mensajeria;
 
 import java.io.Serializable;
 
+import chat.TipoMensajeChat;
+
 public class PaqueteChat extends Paquete implements Serializable, Cloneable {
 
 	private   String nombreUsuarioActivo;
 	private   String nombreUsuarioPasivo;
 	private   String mensajeChat;
+	private TipoMensajeChat tipoMensaje;
 	
 	public PaqueteChat(){
 		setComando(Comando.CHAT);
@@ -36,6 +39,14 @@ public class PaqueteChat extends Paquete implements Serializable, Cloneable {
 		this.mensajeChat = mensajeChat;
 	}
 	
+	public TipoMensajeChat getTipoMensaje() {
+		return tipoMensaje;
+	}
+
+	public void setTipoMensaje(TipoMensajeChat tipoMensaje) {
+		this.tipoMensaje = tipoMensaje;
+	}
+
 	public Object clone() {
 		Object obj = null;
 		obj = super.clone();
