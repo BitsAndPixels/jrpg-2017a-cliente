@@ -3,6 +3,7 @@ package juego;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 
@@ -43,6 +44,9 @@ public class Juego implements Runnable {
 	private EscuchaMensajes escuchaMensajes;
 	private PaquetePersonaje paquetePersonaje;
 	private PaqueteMovimiento ubicacionPersonaje;
+
+	private Map<Integer, PaqueteMovimiento> ubicacionPersonajes;
+	private Map<Integer, PaquetePersonaje> personajesConectados;
 	
 	private CargarRecursos cargarRecursos;
 
@@ -218,7 +222,28 @@ public class Juego implements Runnable {
 		this.paquetePersonaje = paquetePersonaje;
 	}
 	
+//	public void actualizarPersonaje() {
+//		paquetePersonaje = (PaquetePersonaje) (escuchaMensajes.getPersonajesConectados().get(paquetePersonaje.getId()).clone());
+//	}
+	
 	public void actualizarPersonaje() {
-		paquetePersonaje = (PaquetePersonaje) (escuchaMensajes.getPersonajesConectados().get(paquetePersonaje.getId()).clone());
+		paquetePersonaje = (PaquetePersonaje) this.personajesConectados.get(paquetePersonaje.getId()).clone();
+	}
+	
+	// Movido de EscuchaMensajes:
+	public Map<Integer, PaqueteMovimiento> getUbicacionPersonajes() {
+		return ubicacionPersonajes;
+	}
+
+	public void setUbicacionPersonajes(Map<Integer, PaqueteMovimiento> ubicacionPersonajes) {
+		this.ubicacionPersonajes = ubicacionPersonajes;
+	}
+
+	public Map<Integer, PaquetePersonaje> getPersonajesConectados() {
+		return personajesConectados;
+	}
+
+	public void setPersonajesConectados(Map<Integer, PaquetePersonaje> personajesConectados) {
+		this.personajesConectados = personajesConectados;
 	}
 }

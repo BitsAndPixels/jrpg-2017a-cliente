@@ -19,8 +19,8 @@ import javax.swing.JOptionPane;
 import com.google.gson.Gson;
 
 import cliente.Cliente;
+import comando.Comando;
 import frames.MenuJugar;
-import mensajeria.Comando;
 import mensajeria.Paquete;
 
 public class Pantalla {

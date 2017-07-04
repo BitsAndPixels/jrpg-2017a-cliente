@@ -12,9 +12,9 @@ import javax.swing.JOptionPane;
 import com.google.gson.Gson;
 
 import chat.Chat;
+import comando.Comando;
 import frames.*;
 import juego.Juego;
-import mensajeria.Comando;
 import mensajeria.Paquete;
 import mensajeria.PaquetePersonaje;
 import mensajeria.PaqueteUsuario;

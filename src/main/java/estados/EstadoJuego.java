@@ -14,12 +14,12 @@ import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 
+import comando.Comando;
 import entidades.Entidad;
 import interfaz.EstadoDePersonaje;
 import interfaz.MenuInfoPersonaje;
 import juego.Juego;
 import juego.Pantalla;
-import mensajeria.Comando;
 import mensajeria.PaqueteMovimiento;
 import mensajeria.PaquetePersonaje;
 import mundo.Mundo;
@@ -83,9 +83,9 @@ public class EstadoJuego extends Estado {
 
 	public void graficarPersonajes(Graphics g) {
 		
-		if(juego.getEscuchaMensajes().getPersonajesConectados() != null){
-			personajesConectados = new HashMap(juego.getEscuchaMensajes().getPersonajesConectados());
-			ubicacionPersonajes = new HashMap(juego.getEscuchaMensajes().getUbicacionPersonajes());
+		if(juego.getPersonajesConectados() != null){
+			personajesConectados = new HashMap(juego.getPersonajesConectados());
+			ubicacionPersonajes = new HashMap(juego.getUbicacionPersonajes());
 			Iterator<Integer> it = personajesConectados.keySet().iterator();
 			int key;
 			PaqueteMovimiento actual;

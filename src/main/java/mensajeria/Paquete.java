@@ -2,6 +2,11 @@ package mensajeria;
 
 import java.io.Serializable;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
+import comando.Comando;
+
 public class Paquete implements Serializable, Cloneable {
 	
 	public static String msjExito = "1";
@@ -10,6 +15,10 @@ public class Paquete implements Serializable, Cloneable {
 	private String mensaje;
 	private String ip;
 	private int comando;
+	
+	private String classname;
+	
+	public static final Gson gson = new Gson();
 
 	public Paquete() {
 		
@@ -63,6 +72,35 @@ public class Paquete implements Serializable, Cloneable {
 			ex.printStackTrace();
 		}
 		return obj;
+	}
+	
+	public String getJson() {
+		this.classname = this.getClass().getName();
+		return gson.toJson(this);
+	}
+
+	public static Paquete loadJson(String json) {
+		Paquete p = gson.fromJson(json, Paquete.class);
+		try {
+			return (Paquete) gson.fromJson(json, Class.forName(p.classname));
+		} catch (JsonSyntaxException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		} 
+
+	}
+
+	public Comando getComandoObj(String packageO) {
+		try {
+			Comando c;
+			c = (Comando) Class.forName(packageO + "." + Comando.COMANDOS[comando]).newInstance();
+			c.setPaquete(this);
+			return c;
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+			return null;
+		}
+
 	}
 
 }

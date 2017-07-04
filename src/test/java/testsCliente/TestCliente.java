@@ -11,8 +11,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import cliente.Cliente;
+import comando.Comando;
 import inventario.*;
-import mensajeria.Comando;
 import mensajeria.Paquete;
 import mensajeria.PaqueteItem;
 import mensajeria.PaquetePersonaje;

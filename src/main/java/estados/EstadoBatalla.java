@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 
+import comando.Comando;
 import dominio.Asesino;
 import dominio.Casta;
 import dominio.Elfo;
@@ -28,7 +29,6 @@ import inventario.Inventario;
 import inventario.Item;
 import inventario.Mochila;
 import juego.Juego;
-import mensajeria.Comando;
 import mensajeria.Paquete;
 import mensajeria.PaqueteAtacar;
 import mensajeria.PaqueteBatalla;
@@ -69,8 +69,8 @@ public class EstadoBatalla extends Estado {
 		mundo = new Mundo(juego, "recursos/mundoBatalla.txt", "recursos/mundoBatallaCapaDos.txt");
 		miTurno = paqueteBatalla.isMiTurno();
 
-		paquetePersonaje = juego.getEscuchaMensajes().getPersonajesConectados().get(paqueteBatalla.getId());
-		paqueteEnemigo = juego.getEscuchaMensajes().getPersonajesConectados().get(paqueteBatalla.getIdEnemigo());
+		paquetePersonaje = juego.getPersonajesConectados().get(paqueteBatalla.getId());
+		paqueteEnemigo = juego.getPersonajesConectados().get(paqueteBatalla.getIdEnemigo());
 
 		// ITEM RANDOM PREMIO A GANAR
 		paqueteItem = new PaqueteItem();

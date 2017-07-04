@@ -1,7 +1,11 @@
-package mensajeria;
+package comando;
 
-public class Comando {
+import mensajeria.Paquete;
+
+public abstract class Comando {
 	
+	public static final String[] COMANDOS = {"ActualizarPersonaje","Atacar","Batalla","Conexion","CreacionPj","Desconectar","FinalizarBatalla",
+											"InicioSesion","MostrarMapas","Movimiento","Registro","Salir","ObtenerItemRandom","Chat"};			
 	public static final int ACTUALIZARPERSONAJE = 11;
 	public static final int ATACAR = 9;
 	public static final int BATALLA = 8;
@@ -16,4 +20,13 @@ public class Comando {
 	public static final int SALIR = 7;
 	public static final int OBTENERITEMRANDOM = 12;
 	public static final int CHAT = 16;
+	
+	public Paquete paquete;
+	
+	
+	public void setPaquete(Paquete p){
+		this.paquete = p;
+	}
+	
+	public abstract void ejecutarComando();
 }

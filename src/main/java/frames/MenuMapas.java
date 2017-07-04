@@ -1,7 +1,5 @@
 package frames;
 
-import mensajeria.Comando;
-
 import java.awt.Color;
 
 import javax.swing.JFrame;
@@ -11,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import chat.Chat;
 import cliente.Cliente;
+import comando.Comando;
 
 import java.awt.Font;
 import java.awt.Point;
