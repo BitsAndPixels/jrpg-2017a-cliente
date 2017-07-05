@@ -3,9 +3,7 @@ package comando;
 import mensajeria.Paquete;
 
 public abstract class Comando {
-	
-	public static final String[] COMANDOS = {"ActualizarPersonaje","Atacar","Batalla","Conexion","CreacionPj","Desconectar","FinalizarBatalla",
-											"InicioSesion","MostrarMapas","Movimiento","Registro","Salir","ObtenerItemRandom","Chat"};			
+				
 	public static final int ACTUALIZARPERSONAJE = 11;
 	public static final int ATACAR = 9;
 	public static final int BATALLA = 8;
@@ -21,11 +19,14 @@ public abstract class Comando {
 	public static final int OBTENERITEMRANDOM = 12;
 	public static final int CHAT = 16;
 	
+	public static final String[] COMANDOS = {"ActualizarPersonaje","Atacar","Batalla","Chat","Conexion","CreacionPj","Desconectar","FinalizarBatalla",
+			"InicioSesion","MostrarMapas","Movimiento","ObtenerItemRandom","Registro","Salir"};
+	
 	public Paquete paquete;
 	
 	
-	public void setPaquete(Paquete p){
-		this.paquete = p;
+	public void setPaquete(Paquete paqueteComando){
+		this.paquete = paqueteComando;
 	}
 	
 	public abstract void ejecutarComando();

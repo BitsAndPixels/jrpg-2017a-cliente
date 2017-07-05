@@ -93,6 +93,7 @@ public class Paquete implements Serializable, Cloneable {
 	public Comando getComandoObj(String packageO) {
 		try {
 			Comando c;
+			System.out.println(packageO);
 			c = (Comando) Class.forName(packageO + "." + Comando.COMANDOS[comando]).newInstance();
 			c.setPaquete(this);
 			return c;

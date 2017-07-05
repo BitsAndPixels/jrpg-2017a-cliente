@@ -5,7 +5,7 @@ import juego.Juego;
 
 public abstract class ComandoCliente extends Comando {
 
-	public static final String PACKAGEO = "comandos";
+	public static final String PACKAGEO = "comando";
 	
 	protected Juego juego;
 	protected Cliente cliente;
