@@ -91,10 +91,10 @@ public class Paquete implements Serializable, Cloneable {
 
 	}
 
-	public Comando obtenerInstanciaComando(String tipoComando) {
+	public Comando obtenerInstanciaComando(String nombrePackage) {
 		try {
 			Comando c;
-			c = (Comando) Class.forName(tipoComando + "." + Comando.COMANDOS[comando]).newInstance();
+			c = (Comando) Class.forName(nombrePackage + "." + Comando.COMANDOS[comando]).newInstance();
 			c.setPaquete(this);
 			return c;
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {

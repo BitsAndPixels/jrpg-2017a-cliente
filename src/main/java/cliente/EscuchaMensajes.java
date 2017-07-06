@@ -61,9 +61,9 @@ public class EscuchaMensajes extends Thread {
 //				System.out.println("Intento correr: " +p.getClassname());
 //				System.out.println(objetoLeido);
 				
-				ComandoCliente cc = (ComandoCliente)paquete.obtenerInstanciaComando(ComandoCliente.COMANDO);
-				cc.setJuego(juego);
-				cc.ejecutarComando();
+				ComandoCliente comando = (ComandoCliente) paquete.obtenerInstanciaComando(ComandoCliente.COMANDO);
+				comando.setJuego(juego);
+				comando.ejecutarComando();
 				
 //				switch (paquete.getComando()) {
 
@@ -144,11 +144,4 @@ public class EscuchaMensajes extends Thread {
 		}
 	}
 
-//	public Map<Integer, PaqueteMovimiento> getUbicacionPersonajes() {
-//		return ubicacionPersonajes;
-//	}
-//
-//	public Map<Integer, PaquetePersonaje> getPersonajesConectados(){
-//		return personajesConectados;
-//	}
 }
