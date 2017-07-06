@@ -155,9 +155,10 @@ public class Chat extends JFrame {
 
 	private void enviarMensaje() {
 		try {
-			this.cliente.getSalida().writeObject(gson.toJson(this.paqueteChat));
+//			this.cliente.getSalida().writeObject(gson.toJson(this.paqueteChat));
+			this.cliente.getSalida().writeObject(paqueteChat.obtenerJson());
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Fallo la conexion con el servidor.");
+			JOptionPane.showMessageDialog(null, "Fallo la conexion con el servidor de chat.");
 			e.printStackTrace();
 		}
 	}

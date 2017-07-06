@@ -3,9 +3,9 @@ package comando;
 import mensajeria.PaqueteItem;
 
 public class ObtenerItemRandom extends ComandoCliente{
+	private PaqueteItem paqueteItem;
 	public void ejecutarComando() {
-//		paqueteItem = (PaqueteItem) gson.fromJson(objetoLeido, PaqueteItem.class);
-		PaqueteItem paqueteItem = (PaqueteItem) paquete;
+		this.paqueteItem = (PaqueteItem) paquete;
 		juego.getEstadoBatalla().setItemGanado(paqueteItem.crearItem());
 	}
 }

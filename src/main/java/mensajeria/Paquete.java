@@ -16,7 +16,7 @@ public class Paquete implements Serializable, Cloneable {
 	private String ip;
 	private int comando;
 	
-	private String classname;
+	private String clase;
 	
 	public static final Gson gson = new Gson();
 
@@ -74,15 +74,16 @@ public class Paquete implements Serializable, Cloneable {
 		return obj;
 	}
 	
-	public String getJson() {
-		this.classname = this.getClass().getName();
+	public String obtenerJson() {
+		this.clase = this.getClass().getName();
 		return gson.toJson(this);
 	}
 
-	public static Paquete loadJson(String json) {
+	public static Paquete cargarJson(String json) {
 		Paquete p = gson.fromJson(json, Paquete.class);
+//		System.out.println(p.classname);
 		try {
-			return (Paquete) gson.fromJson(json, Class.forName(p.classname));
+			return (Paquete) gson.fromJson(json, Class.forName(p.clase));
 		} catch (JsonSyntaxException | ClassNotFoundException e) {
 			e.printStackTrace();
 			return null;
@@ -90,11 +91,10 @@ public class Paquete implements Serializable, Cloneable {
 
 	}
 
-	public Comando getComandoObj(String packageO) {
+	public Comando obtenerInstanciaComando(String tipoComando) {
 		try {
 			Comando c;
-			System.out.println(packageO);
-			c = (Comando) Class.forName(packageO + "." + Comando.COMANDOS[comando]).newInstance();
+			c = (Comando) Class.forName(tipoComando + "." + Comando.COMANDOS[comando]).newInstance();
 			c.setPaquete(this);
 			return c;
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
@@ -102,6 +102,10 @@ public class Paquete implements Serializable, Cloneable {
 			return null;
 		}
 
+	}
+	
+	public String getClassname() {
+		return this.clase;
 	}
 
 }

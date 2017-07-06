@@ -113,14 +113,13 @@ public class Cliente extends Thread {
 					}
 	
 					// Le envio el paquete al servidor
-					salida.writeObject(gson.toJson(paqueteUsuario));
+					salida.writeObject(paqueteUsuario.obtenerJson());
 	
 					// Recibo el paquete desde el servidor
 					String cadenaLeida = (String) entrada.readObject();
-//					Paquete paquete = gson.fromJson(cadenaLeida, Paquete.class);
 				
-					Paquete paquete = Paquete.loadJson(cadenaLeida);
-					ComandoCliente comando = (ComandoCliente) paquete.getComandoObj(ComandoCliente.PACKAGEO);
+					Paquete paquete = Paquete.cargarJson(cadenaLeida);
+					ComandoCliente comando = (ComandoCliente) paquete.obtenerInstanciaComando(ComandoCliente.COMANDO);
 					comando.setCliente(this);
 					comando.ejecutarComando();
 					
@@ -201,7 +200,8 @@ public class Cliente extends Thread {
 				paquetePersonaje.setIp(miIp);
 				
 				// Le envio el paquete con el mapa seleccionado
-				salida.writeObject(gson.toJson(paquetePersonaje));
+//				salida.writeObject(gson.toJson(paquetePersonaje));
+				salida.writeObject(paquetePersonaje.obtenerJson());
 	
 				// Instancio el juego y cargo los recursos
 				wome = new Juego("World Of the Middle Earth", 800, 600, this, paquetePersonaje);

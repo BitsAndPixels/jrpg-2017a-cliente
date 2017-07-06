@@ -10,11 +10,14 @@ import mensajeria.PaquetePersonaje;
 import mensajeria.PaqueteUsuario;
 
 public class Registro extends ComandoCliente{
+	private PaquetePersonaje paquetePersonaje;
+	private PaqueteUsuario paqueteUsuario;
+	
 	@Override
 	public void ejecutarComando() {
-		
-		PaquetePersonaje paquetePersonaje = cliente.getPaquetePersonaje();
-		PaqueteUsuario paqueteUsuario = cliente.getPaqueteUsuario();
+		synchronized(this){
+		this.paquetePersonaje = cliente.getPaquetePersonaje();
+		this.paqueteUsuario = cliente.getPaqueteUsuario();
 		
 		if (paquete.getMensajeChat().equals(Paquete.msjExito)) {
 
@@ -32,17 +35,15 @@ public class Registro extends ComandoCliente{
 			// Le envio los datos al servidor
 			paquetePersonaje.setComando(Comando.CREACIONPJ);
 			try {
-				cliente.getSalida().writeObject(paquetePersonaje.getJson());
+				cliente.getSalida().writeObject(paquetePersonaje.obtenerJson());
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}									
 			JOptionPane.showMessageDialog(null, "Registro exitoso.");
 			
 			// Recibo el paquete personaje con los datos (la id incluida)
-//			paquetePersonaje = (PaquetePersonaje) gson.fromJson((String) entrada.readObject(), PaquetePersonaje.class);
-
 			try {
-				paquetePersonaje = (PaquetePersonaje) Paquete.loadJson((String) cliente.getEntrada().readObject());
+				paquetePersonaje = (PaquetePersonaje) Paquete.cargarJson((String) cliente.getEntrada().readObject());
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 			}
@@ -57,6 +58,6 @@ public class Registro extends ComandoCliente{
 			// El usuario no pudo iniciar sesi�n
 			paqueteUsuario.setInicioSesion(false);
 		}
-		
+		}
 	}
 }

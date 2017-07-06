@@ -46,15 +46,6 @@ public class EscuchaMensajes extends Thread {
 		try {
 
 			Paquete paquete;
-//			PaquetePersonaje paquetePersonaje;
-//			PaqueteMovimiento personaje;
-//			PaqueteBatalla paqueteBatalla;
-//			PaqueteAtacar paqueteAtacar;
-//			PaqueteFinalizarBatalla paqueteFinalizarBatalla;
-//			personajesConectados = new HashMap<>();
-//			ubicacionPersonajes = new HashMap<>();
-//			PaqueteItem paqueteItem;
-//			PaqueteChat paqueteChat;
 			
 			juego.setPersonajesConectados(new HashMap<Integer, PaquetePersonaje>());
 			juego.setUbicacionPersonajes(new HashMap<Integer, PaqueteMovimiento>());
@@ -62,11 +53,15 @@ public class EscuchaMensajes extends Thread {
 			while (true) {
 
 				String objetoLeido = (String)entrada.readObject();
+				paquete = Paquete.cargarJson(objetoLeido);
 
-//				paquete = gson.fromJson(objetoLeido , Paquete.class);
-				paquete = Paquete.loadJson(objetoLeido);
+				// DESCOMENTAR PARA MODO DEBUG POR CONSOLA:
+//				Paquete p = gson.fromJson(objetoLeido, Paquete.class);
+//				
+//				System.out.println("Intento correr: " +p.getClassname());
+//				System.out.println(objetoLeido);
 				
-				ComandoCliente cc = (ComandoCliente)paquete.getComandoObj(ComandoCliente.PACKAGEO);
+				ComandoCliente cc = (ComandoCliente)paquete.obtenerInstanciaComando(ComandoCliente.COMANDO);
 				cc.setJuego(juego);
 				cc.ejecutarComando();
 				

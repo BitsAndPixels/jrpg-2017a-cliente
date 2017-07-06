@@ -7,18 +7,19 @@ import mensajeria.PaquetePersonaje;
 import mensajeria.PaqueteUsuario;
 
 public class InicioSesion extends ComandoCliente{
+	private PaqueteUsuario paqueteUsuario;
 	@Override
 	public void ejecutarComando() {
 		synchronized (this) {
 					
-			PaqueteUsuario paqueteUsuario = cliente.getPaqueteUsuario();
+			this.paqueteUsuario = cliente.getPaqueteUsuario();
 			if (paquete.getMensajeChat().equals(Paquete.msjExito)) {
 				
 				// El usuario ya inicio sesi�n
 				paqueteUsuario.setInicioSesion(true);
 				
 				// Recibo el paquete personaje con los datos
-	//			paquetePersonaje = (PaquetePersonaje) gson.fromJson(cadenaLeida, PaquetePersonaje.class);
+
 				cliente.setPaquetePersonaje((PaquetePersonaje) paquete);
 	
 			} else {
