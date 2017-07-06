@@ -25,6 +25,53 @@ public class PaquetePersonaje extends Paquete implements Serializable, Cloneable
 	private Mochila mochila;
 	private Inventario inventario;
 
+	// Ingresados solamente para Menu Mochila Personaje
+
+	private int ataque;
+	public int getIdMapa() {
+		return idMapa;
+	}
+
+	public void setIdMapa(int idMapa) {
+		this.idMapa = idMapa;
+	}
+
+	public int getAtaque() {
+		return ataque;
+	}
+
+	public void setAtaque(int ataque) {
+		this.ataque = ataque;
+	}
+
+	public int getDefensa() {
+		return defensa;
+	}
+
+	public void setDefensa(int defensa) {
+		this.defensa = defensa;
+	}
+
+	public int getMagia() {
+		return magia;
+	}
+
+	public void setMagia(int magia) {
+		this.magia = magia;
+	}
+
+	public int getEnergia() {
+		return energia;
+	}
+
+	public void setEnergia(int energia) {
+		this.energia = energia;
+	}
+
+	private int defensa;
+	private int magia;
+	private int energia;
+
 	public PaquetePersonaje() {
 		estado = Estado.estadoOffline;
 	}
@@ -36,15 +83,15 @@ public class PaquetePersonaje extends Paquete implements Serializable, Cloneable
 	public void setEstado(int estado) {
 		this.estado = estado;
 	}
-	
-	public int getMapa(){
+
+	public int getMapa() {
 		return idMapa;
 	}
-	
-	public void setMapa(int mapa){
+
+	public void setMapa(int mapa) {
 		idMapa = mapa;
 	}
-	
+
 	public int getNivel() {
 		return nivel;
 	}
@@ -65,16 +112,13 @@ public class PaquetePersonaje extends Paquete implements Serializable, Cloneable
 		return id;
 	}
 
-
 	public void setId(int id) {
 		this.id = id;
 	}
 
-
 	public String getCasta() {
 		return casta;
 	}
-
 
 	public void setCasta(String casta) {
 		this.casta = casta;
@@ -84,81 +128,65 @@ public class PaquetePersonaje extends Paquete implements Serializable, Cloneable
 		return nombre;
 	}
 
-
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
 
 	public String getRaza() {
 		return raza;
 	}
 
-
 	public void setRaza(String raza) {
 		this.raza = raza;
 	}
-
 
 	public int getSaludTope() {
 		return saludTope;
 	}
 
-
 	public void setSaludTope(int saludTope) {
 		this.saludTope = saludTope;
 	}
-	
+
 	public int getSalud() {
 		return salud;
 	}
-
 
 	public void setSalud(int salud) {
 		this.salud = salud;
 	}
 
-
 	public int getEnergiaTope() {
 		return energiaTope;
 	}
-
 
 	public void setEnergiaTope(int energiaTope) {
 		this.energiaTope = energiaTope;
 	}
 
-
 	public int getFuerza() {
 		return fuerza;
 	}
-
 
 	public void setFuerza(int fuerza) {
 		this.fuerza = fuerza;
 	}
 
-
 	public int getDestreza() {
 		return destreza;
 	}
-
 
 	public void setDestreza(int destreza) {
 		this.destreza = destreza;
 	}
 
-
 	public int getInteligencia() {
 		return inteligencia;
 	}
 
-
 	public void setInteligencia(int inteligencia) {
 		this.inteligencia = inteligencia;
 	}
-	
-	
 
 	public Mochila getMochila() {
 		return mochila;
