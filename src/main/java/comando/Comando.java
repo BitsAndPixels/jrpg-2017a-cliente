@@ -18,10 +18,11 @@ public abstract class Comando {
 	public static final int SALIR = 7;
 	public static final int OBTENERITEMRANDOM = 12;
 	public static final int CHAT = 13;
+	public static final int INICIARCOMERCIO = 14;
 	
 	public static final String[] COMANDOS =  {"Conexion","CreacionPj","Desconectar","InicioSesion","MostrarMapas","Movimiento",
 												"Registro","Salir","Batalla","Atacar","FinalizarBatalla","ActualizarPersonaje",
-												"ObtenerItemRandom","Chat"};
+												"ObtenerItemRandom","Chat","IniciarComercio"};
 	public Paquete paquete;
 	
 	public void setPaquete(Paquete paqueteComando){

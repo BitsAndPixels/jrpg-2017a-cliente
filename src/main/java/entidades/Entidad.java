@@ -12,9 +12,12 @@ import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 
+import chat.TipoOperacionComercio;
+import comando.Comando;
 import juego.Juego;
 import juego.Pantalla;
 import mensajeria.PaqueteBatalla;
+import mensajeria.PaqueteComercio;
 import mensajeria.PaqueteMovimiento;
 import mundo.Grafo;
 import mundo.Mundo;
@@ -22,6 +25,7 @@ import mundo.Nodo;
 import recursos.Recursos;
 import entidades.Animacion;
 import estados.Estado;
+import frames.MenuComercio;
 import interfaz.MenuInfoPersonaje;
 
 public class Entidad {
@@ -170,7 +174,23 @@ public class Entidad {
 							}
 						}  
 						else if(juego.getEstadoJuego().getTipoSolicitud() == MenuInfoPersonaje.menuComercio){
-							System.out.println("abro pantalla comercio");
+//							System.out.println("abro pantalla comercio");
+							
+							MenuComercio menuComercio = new MenuComercio(juego.getCliente(), juego.getPersonaje(),juego.getPersonajesConectados().get(idEnemigo));
+							menuComercio.setVisible(true);
+							
+							PaqueteComercio pc = new PaqueteComercio();
+							pc.setTipoOperacion(TipoOperacionComercio.INICIARCOMERCIO);
+							pc.setComando(Comando.INICIARCOMERCIO);
+							pc.setIdReceptor(idEnemigo);
+							pc.setNombreUsuarioActivo(juego.getPersonaje().getNombre());
+							pc.setNombreUsuarioPasivo(juego.getPersonajesConectados().get(idEnemigo).getNombre());
+							try {
+								juego.getCliente().getSalida().writeObject(pc.obtenerJson());
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							
 							juego.getEstadoJuego().setHaySolicitud(false, null, 0);
 						}
 						else {
@@ -213,8 +233,6 @@ public class Entidad {
 										juego.getPersonajesConectados().get(idEnemigo), MenuInfoPersonaje.menuBatallar);
 							}
 								
-//							juego.getEstadoJuego().setHaySolicitud(true,
-//									juego.getPersonajesConectados().get(idEnemigo), MenuInfoPersonaje.menuComercio);
 							juego.getHandlerMouse().setNuevoClick(false);
 						}
 						
@@ -317,14 +335,14 @@ public class Entidad {
 		
 		int tileXIni = 1;
 		int tileYIni = 1;
-		System.out.println("(tileX: "+tileX+",tileY: "+tileY+")");
+//		System.out.println("(tileX: "+tileX+",tileY: "+tileY+")");
 		for (int i = 0; i < 8; i++) {
 			
 			for (int j = 0; j < 7; j++) {
 				
-				System.out.println("("+tileXIni+","+tileYIni+")");
+//				System.out.println("("+tileXIni+","+tileYIni+")");
 				if (tileX == tileXIni && tileY == tileYIni) {
-					System.out.println("esta!");
+//					System.out.println("esta!");
 					return true;
 				}
 				tileYIni++;
