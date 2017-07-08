@@ -27,6 +27,7 @@ public class Cliente extends Thread {
 	private ObjectInputStream entrada;
 	private ObjectOutputStream salida;
 	private Chat chat;
+	private MenuMochilaInventario menuMochilaInventario;
 
 	// Objeto gson
 	private final Gson gson = new Gson();
@@ -153,6 +154,11 @@ public class Cliente extends Thread {
 				// Arranco la ventana de chat
 				chat=new Chat(this);
 				chat.setVisible(true);
+				
+				// Arranco la ventana de MenuMochilaInventario
+				menuMochilaInventario=new MenuMochilaInventario(paquetePersonaje);
+				menuMochilaInventario.setVisible(true);
+				
 				
 				// Espero que se carguen todos los recursos
 				wait();
