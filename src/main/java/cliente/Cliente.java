@@ -12,9 +12,10 @@ import javax.swing.JOptionPane;
 import com.google.gson.Gson;
 
 import chat.Chat;
+import comando.Comando;
+import comando.ComandoCliente;
 import frames.*;
 import juego.Juego;
-import mensajeria.Comando;
 import mensajeria.Paquete;
 import mensajeria.PaquetePersonaje;
 import mensajeria.PaqueteUsuario;
@@ -112,73 +113,17 @@ public class Cliente extends Thread {
 					}
 	
 					// Le envio el paquete al servidor
-					salida.writeObject(gson.toJson(paqueteUsuario));
+					salida.writeObject(paqueteUsuario.obtenerJson());
 	
 					// Recibo el paquete desde el servidor
 					String cadenaLeida = (String) entrada.readObject();
-					Paquete paquete = gson.fromJson(cadenaLeida, Paquete.class);
 				
-					switch (paquete.getComando()) {
+					Paquete paquete = Paquete.cargarJson(cadenaLeida);
+					ComandoCliente comando = (ComandoCliente) paquete.obtenerInstanciaComando(ComandoCliente.COMANDO);
+					comando.setCliente(this);
+					comando.ejecutarComando();
 					
-					case Comando.REGISTRO:
-						if (paquete.getMensajeChat().equals(Paquete.msjExito)) {
 
-							// Abro el menu para la creaci�n del personaje
-							MenuCreacionPj menuCreacionPJ = new MenuCreacionPj(this, paquetePersonaje);
-							menuCreacionPJ.setVisible(true);
-							
-							// Espero a que el usuario cree el personaje
-							wait();
-							
-							// Le envio los datos al servidor
-							paquetePersonaje.setComando(Comando.CREACIONPJ);
-							salida.writeObject(gson.toJson(paquetePersonaje));									
-							JOptionPane.showMessageDialog(null, "Registro exitoso.");
-							
-							// Recibo el paquete personaje con los datos (la id incluida)
-							paquetePersonaje = (PaquetePersonaje) gson.fromJson((String) entrada.readObject(), PaquetePersonaje.class);
-
-							// Indico que el usuario ya inicio sesion
-							paqueteUsuario.setInicioSesion(true);
-							
-						} else {
-							if (paquete.getMensajeChat().equals(Paquete.msjFracaso))
-								JOptionPane.showMessageDialog(null, "No se pudo registrar.");
-
-							// El usuario no pudo iniciar sesi�n
-							paqueteUsuario.setInicioSesion(false);
-						}
-						break;
-	
-					case Comando.INICIOSESION:
-						if (paquete.getMensajeChat().equals(Paquete.msjExito)) {
-							
-							// El usuario ya inicio sesi�n
-							paqueteUsuario.setInicioSesion(true);
-							
-							// Recibo el paquete personaje con los datos
-							paquetePersonaje = (PaquetePersonaje) gson.fromJson(cadenaLeida, PaquetePersonaje.class);
-
-						} else {
-							if (paquete.getMensajeChat().equals(Paquete.msjFracaso))
-								JOptionPane.showMessageDialog(null, "Error al iniciar sesion. Revise el usuario y la contrase�a");
-	
-							// El usuario no pudo iniciar sesi�n
-							paqueteUsuario.setInicioSesion(false);
-						}
-						break;
-	
-					case Comando.SALIR:
-						// El usuario no pudo iniciar sesi�n
-						paqueteUsuario.setInicioSesion(false);
-						salida.writeObject(gson.toJson(new Paquete(Comando.DESCONECTAR), Paquete.class));
-						cliente.close();
-						break;
-	
-					default:
-						break;
-					}
-	
 				}
 				
 				// Creo un paquete con el comando mostrar mapas
@@ -195,7 +140,8 @@ public class Cliente extends Thread {
 				paquetePersonaje.setIp(miIp);
 				
 				// Le envio el paquete con el mapa seleccionado
-				salida.writeObject(gson.toJson(paquetePersonaje));
+//				salida.writeObject(gson.toJson(paquetePersonaje));
+				salida.writeObject(paquetePersonaje.obtenerJson());
 	
 				// Instancio el juego y cargo los recursos
 				wome = new Juego("World Of the Middle Earth", 800, 600, this, paquetePersonaje);
@@ -276,5 +222,10 @@ public class Cliente extends Thread {
 
 	public Chat getChat() {
 		return chat;
+	}
+
+	public void setPaquetePersonaje(PaquetePersonaje paquete) {
+		this.paquetePersonaje = paquete;
+		
 	}
 }

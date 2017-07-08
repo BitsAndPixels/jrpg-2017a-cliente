@@ -19,8 +19,8 @@ import javax.swing.JOptionPane;
 import com.google.gson.Gson;
 
 import cliente.Cliente;
+import comando.Comando;
 import frames.MenuJugar;
-import mensajeria.Comando;
 import mensajeria.Paquete;
 
 public class Pantalla {
@@ -46,7 +46,7 @@ public class Pantalla {
 					Paquete p = new Paquete();
 					p.setComando(Comando.DESCONECTAR);
 					p.setIp(cliente.getMiIp());
-					cliente.getSalida().writeObject(gson.toJson(p));
+					cliente.getSalida().writeObject(p.obtenerJson());
 					cliente.getEntrada().close();
 					cliente.getSalida().close();
 					cliente.getSocket().close();

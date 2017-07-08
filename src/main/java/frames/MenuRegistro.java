@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.swing.JFrame;
 
 import cliente.*;
-import mensajeria.Comando;
+import comando.Comando;
 
 import javax.swing.JTextField;
 import java.awt.Font;

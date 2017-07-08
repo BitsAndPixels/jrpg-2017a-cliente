@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import cliente.*;
-import mensajeria.Comando;
+import comando.Comando;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;

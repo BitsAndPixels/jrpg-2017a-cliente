@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 
+import comando.Comando;
 import dominio.Asesino;
 import dominio.Casta;
 import dominio.Elfo;
@@ -28,7 +29,6 @@ import inventario.Inventario;
 import inventario.Item;
 import inventario.Mochila;
 import juego.Juego;
-import mensajeria.Comando;
 import mensajeria.Paquete;
 import mensajeria.PaqueteAtacar;
 import mensajeria.PaqueteBatalla;
@@ -69,8 +69,8 @@ public class EstadoBatalla extends Estado {
 		mundo = new Mundo(juego, "recursos/mundoBatalla.txt", "recursos/mundoBatallaCapaDos.txt");
 		miTurno = paqueteBatalla.isMiTurno();
 
-		paquetePersonaje = juego.getEscuchaMensajes().getPersonajesConectados().get(paqueteBatalla.getId());
-		paqueteEnemigo = juego.getEscuchaMensajes().getPersonajesConectados().get(paqueteBatalla.getIdEnemigo());
+		paquetePersonaje = juego.getPersonajesConectados().get(paqueteBatalla.getId());
+		paqueteEnemigo = juego.getPersonajesConectados().get(paqueteBatalla.getIdEnemigo());
 
 		// ITEM RANDOM PREMIO A GANAR
 		paqueteItem = new PaqueteItem();
@@ -278,7 +278,7 @@ public class EstadoBatalla extends Estado {
 
 	public void enviarAtaque(PaqueteAtacar paqueteAtacar) {
 		try {
-			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteAtacar));
+			juego.getCliente().getSalida().writeObject(paqueteAtacar.obtenerJson());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexion con el servidor.");
 			e.printStackTrace();
@@ -287,7 +287,7 @@ public class EstadoBatalla extends Estado {
 
 	private void finalizarBatalla() {
 		try {
-			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteFinalizarBatalla));
+			juego.getCliente().getSalida().writeObject(paqueteFinalizarBatalla.obtenerJson());
 			
 			paquetePersonaje.setSaludTope(personaje.getSaludTope());
 			paquetePersonaje.setEnergiaTope(personaje.getEnergiaTope());
@@ -312,8 +312,8 @@ public class EstadoBatalla extends Estado {
 			paquetePersonaje.setComando(Comando.ACTUALIZARPERSONAJE);
 			paqueteEnemigo.setComando(Comando.ACTUALIZARPERSONAJE);
 			
-			juego.getCliente().getSalida().writeObject(gson.toJson(paquetePersonaje));
-			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteEnemigo));
+			juego.getCliente().getSalida().writeObject(paquetePersonaje.obtenerJson());
+			juego.getCliente().getSalida().writeObject(paqueteEnemigo.obtenerJson());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexi�n con el servidor.");
 			e.printStackTrace();
@@ -363,7 +363,7 @@ public class EstadoBatalla extends Estado {
 			
 			paqueteItem.setComando(Comando.OBTENERITEMRANDOM);
 			// Envio el paquete pidiendo un item
-			juego.getCliente().getSalida().writeObject(gson.toJson(paqueteItem));
+			juego.getCliente().getSalida().writeObject(paqueteItem.obtenerJson());
 			
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Fallo la conexi�n con el servidor.");

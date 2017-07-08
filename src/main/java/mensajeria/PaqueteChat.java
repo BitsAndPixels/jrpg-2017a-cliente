@@ -3,6 +3,7 @@ package mensajeria;
 import java.io.Serializable;
 
 import chat.TipoMensajeChat;
+import comando.Comando;
 
 public class PaqueteChat extends Paquete implements Serializable, Cloneable {
 
