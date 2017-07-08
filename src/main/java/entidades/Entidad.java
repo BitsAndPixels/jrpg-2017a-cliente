@@ -168,7 +168,12 @@ public class Entidad {
 								JOptionPane.showMessageDialog(null, "Fallo la conexión con el servidor");
 								e.printStackTrace();
 							}
-						} else {
+						}  
+						else if(juego.getEstadoJuego().getTipoSolicitud() == MenuInfoPersonaje.menuComercio){
+							System.out.println("abro pantalla comercio");
+							juego.getEstadoJuego().setHaySolicitud(false, null, 0);
+						}
+						else {
 							juego.getEstadoJuego().setHaySolicitud(false, null, 0);
 						}
 						
@@ -191,17 +196,29 @@ public class Entidad {
 					key = (int) it.next();
 					actual = juego.getUbicacionPersonajes().get(key);
 					tilePersonajes = Mundo.mouseATile(actual.getPosX(), actual.getPosY());
+					
 					if (actual != null && actual.getIdPersonaje() != juego.getPersonaje().getId()
 							&& juego.getPersonajesConectados().get(actual.getIdPersonaje()) != null
 							&& juego.getPersonajesConectados().get(actual.getIdPersonaje())
 									.getEstado() == Estado.estadoJuego) {
 
-						if (tileMoverme[0] == tilePersonajes[0] && tileMoverme[1] == tilePersonajes[1]) {
+						if (tileMoverme[0] == tilePersonajes[0] && tileMoverme[1] == tilePersonajes[1] ) {
 							idEnemigo = actual.getIdPersonaje();
-							juego.getEstadoJuego().setHaySolicitud(true,
-									juego.getPersonajesConectados().get(idEnemigo), MenuInfoPersonaje.menuBatallar);
+							if (enComercio(tileMoverme[0],tileMoverme[1]) && enComercio(tilePersonajes[0],tilePersonajes[1])) {
+								juego.getEstadoJuego().setHaySolicitud(true,
+										juego.getPersonajesConectados().get(idEnemigo), MenuInfoPersonaje.menuComercio);
+							}
+							else {
+								juego.getEstadoJuego().setHaySolicitud(true,
+										juego.getPersonajesConectados().get(idEnemigo), MenuInfoPersonaje.menuBatallar);
+							}
+								
+//							juego.getEstadoJuego().setHaySolicitud(true,
+//									juego.getPersonajesConectados().get(idEnemigo), MenuInfoPersonaje.menuComercio);
 							juego.getHandlerMouse().setNuevoClick(false);
 						}
+						
+						
 					}
 				}
 			}
@@ -294,6 +311,30 @@ public class Entidad {
 
 			enMovimiento = true;
 		}
+	}
+
+	private boolean enComercio(int tileX, int tileY) {
+		
+		int tileXIni = 1;
+		int tileYIni = 1;
+		System.out.println("(tileX: "+tileX+",tileY: "+tileY+")");
+		for (int i = 0; i < 8; i++) {
+			
+			for (int j = 0; j < 7; j++) {
+				
+				System.out.println("("+tileXIni+","+tileYIni+")");
+				if (tileX == tileXIni && tileY == tileYIni) {
+					System.out.println("esta!");
+					return true;
+				}
+				tileYIni++;
+			}
+			tileXIni++;
+			tileYIni=1;
+		}
+		
+		
+		return false;
 	}
 
 	public void mover() {
