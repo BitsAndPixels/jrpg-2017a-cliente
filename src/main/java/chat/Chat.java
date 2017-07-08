@@ -107,7 +107,7 @@ public class Chat extends JFrame {
 		});
 	}
 
-	private void comportamientoBoton(String usuarioActivo) {
+	private void comportamientoBoton(final String usuarioActivo) {
 		if (selectorArmadoPaqueteChat(textField.getText(), usuarioActivo) == true) {
 			textArea.append(textField.getText() + System.lineSeparator());
 			enviarMensaje();

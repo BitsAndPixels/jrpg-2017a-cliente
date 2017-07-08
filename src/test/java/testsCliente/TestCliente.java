@@ -327,43 +327,6 @@ public class TestCliente {
 //		}
 //	}
 	
-	@Test
-	public void testIniciarSesion() {
-		
-		Paquete paquete;
-		
-		
-		Gson gson = new Gson();
-		Cliente cliente = new Cliente();
 
-		PaqueteUsuario pu = cliente.getPaqueteUsuario();
-		pu.setComando(Comando.INICIOSESION);
-		pu.setUsername("cortex");
-		pu.setPassword("1234567");
-
-		try {
-
-			// Envio el paquete de incio de sesion
-//			cliente.getSalida().writeObject(gson.toJson(pu));
-			cliente.getSalida().writeObject(pu.obtenerJson());
-
-			// Recibo el paquete con el personaje
-			PaquetePersonaje paquetePersonaje = (PaquetePersonaje) gson
-					.fromJson((String) cliente.getEntrada().readObject(), PaquetePersonaje.class);
-
-			// Cierro las conexiones
-			Paquete p = new Paquete();
-			p.setComando(Comando.DESCONECTAR);
-			p.setIp(cliente.getMiIp());
-			cliente.getSalida().writeObject(gson.toJson(p));
-			cliente.getSalida().close();
-			cliente.getEntrada().close();
-			cliente.getSocket().close();
-
-			Assert.assertEquals("cortex", paquetePersonaje.getNombre());
-		} catch (IOException | JsonSyntaxException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 	
 }
